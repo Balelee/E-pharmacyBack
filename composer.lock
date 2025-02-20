@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2c4a19e29891c8b11e5819908a122a15",
+    "content-hash": "c1453456bb2d74ae7f1e53a705b184ba",
     "packages": [
         {
             "name": "asvae/laravel-api-tester",

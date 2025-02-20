@@ -14,7 +14,6 @@ return [
 
     'enabled' => env('APP_DEBUG', false),
 
-
     /*
     |--------------------------------------------------------------------------
     | Default route
@@ -26,7 +25,6 @@ return [
     */
 
     'route' => 'api-tester',
-
 
     /*
     |--------------------------------------------------------------------------
@@ -58,7 +56,6 @@ return [
     */
 
     'route_meta' => true,
-
 
     /*
     |--------------------------------------------------------------------------
@@ -124,7 +121,7 @@ return [
 
     'route_repositories' => [
         Asvae\ApiTester\Repositories\RouteLaravelRepository::class,
-        //Asvae\ApiTester\Repositories\RouteDingoRepository::class,
+        // Asvae\ApiTester\Repositories\RouteDingoRepository::class,
     ],
 
     /*
@@ -152,8 +149,8 @@ return [
         'file' => [
             'class' => Asvae\ApiTester\Storages\JsonStorage::class,
             'options' => [
-                'path' => 'storage/api-tester/requests.db'
-            ]
+                'path' => 'storage/api-tester/requests.db',
+            ],
         ],
         'firebase' => [
             'class' => Asvae\ApiTester\Storages\FireBaseStorage::class,
@@ -164,7 +161,7 @@ return [
                 'secret' => env('API_TESTER_FIREBASE_SECRET', '<your-secret-api-key>'),
                 'options' => ['admin' => true],
                 'data' => [],
-            ]
-        ]
-    ]
+            ],
+        ],
+    ],
 ];
