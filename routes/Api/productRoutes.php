@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
 
 Route::get('/products', [ProductController::class, 'getProducts']);
 Route::post('/products', [ProductController::class, 'storeProduct']);
