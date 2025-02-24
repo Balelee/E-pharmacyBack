@@ -23,7 +23,7 @@ class Product extends BaseModel
 
     protected $casts = [
         'expiredDate' => 'date',
-        'productType' => ProductType::class
+        'productType' => ProductType::class,
     ];
 
     public static function validationRule()

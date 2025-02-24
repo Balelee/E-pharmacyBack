@@ -3,7 +3,6 @@
 namespace App\Models\Enums;
 
 use Illuminate\Support\Arr;
-use App\Models\Enums\AdvancedEnumInterface;
 
 trait AdvancedEnum
 {

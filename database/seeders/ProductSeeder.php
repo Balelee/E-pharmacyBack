@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Product;
 use Illuminate\Database\Seeder;
-use App\Models\Enums\ProductType;
 
 class ProductSeeder extends Seeder
 {
