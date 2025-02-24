@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Enums\ProductType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends BaseModel
@@ -22,6 +23,7 @@ class Product extends BaseModel
 
     protected $casts = [
         'expiredDate' => 'date',
+        'productType' => ProductType::class
     ];
 
     public static function validationRule()
