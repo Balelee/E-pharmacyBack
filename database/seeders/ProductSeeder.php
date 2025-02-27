@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Pharmacy;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
 
@@ -12,10 +13,10 @@ class ProductSeeder extends Seeder
         return [
             [
                 'productName' => 'Diclore',
-                'description' => 'Prouit contre le rhume',
+                'description' => 'Produit contre le rhume',
                 'price' => '3500',
                 'stock' => 10,
-                'expiredDate' => '12-12-2025',
+                'expiredDate' => '2025-12-12', // Format correct pour MySQL
                 'laborator' => 'Saint Camille-France',
             ],
             [
@@ -23,24 +24,24 @@ class ProductSeeder extends Seeder
                 'description' => 'Produit pour la fièvre',
                 'price' => '1500',
                 'stock' => 15,
-                'expiredDate' => '12-12-2027',
+                'expiredDate' => '2027-12-12',
                 'laborator' => 'USA',
             ],
             [
                 'productName' => 'Paracetamol',
-                'description' => 'Prouit contre la douleur',
+                'description' => 'Produit contre la douleur',
                 'price' => '100',
                 'stock' => 10,
-                'expiredDate' => '12-12-2028',
-                'laborator' => 'Laboratoire de Koweit',
+                'expiredDate' => '2028-12-12',
+                'laborator' => 'Laboratoire de Koweït',
             ],
             [
                 'productName' => 'Maloox',
                 'description' => 'Produit contre ulcère',
                 'price' => '1110',
                 'stock' => 10,
-                'expiredDate' => '12-12-2026',
-                'laborator' => 'Laborator finlande',
+                'expiredDate' => '2026-12-12',
+                'laborator' => 'Laboratoire Finlande',
             ],
         ];
     }
@@ -48,8 +49,11 @@ class ProductSeeder extends Seeder
     public function run()
     {
         Product::truncate();
+
         foreach ($this->data() as $product) {
-            Product::create($product);
+            Product::create(array_merge($product, [
+                'pharmacy_id' => Pharmacy::inRandomOrder()->value('id'),
+            ]));
         }
     }
 }

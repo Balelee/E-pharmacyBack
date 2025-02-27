@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Enums\UserType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->string('birthPlace');
             $table->string('email')->unique();
             $table->string('password');
+            $table->enum('userType', UserType::values())->default(UserType::default());
             $table->rememberToken();
             $table->timestamps();
         });

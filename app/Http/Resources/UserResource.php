@@ -23,6 +23,8 @@ class UserResource extends JsonResource
             'birthDate' => $this->birthDate->format('d-m-Y'),
             'birthPlace' => $this->birthPlace,
             'email' => $this->email,
+            'userType' => $this->userType,
+            'userTypeLabel' => $this->userType->label(),
             'token' => $this->token,
 
         ];

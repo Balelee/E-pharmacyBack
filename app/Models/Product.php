@@ -10,6 +10,7 @@ class Product extends BaseModel
     use HasFactory;
 
     protected $fillable = [
+        'pharmacy_id',
         'productImage',
         'productName',
         'description',
@@ -24,7 +25,18 @@ class Product extends BaseModel
     protected $casts = [
         'expiredDate' => 'date',
         'productType' => ProductType::class,
+        'stock' => 'integer',
     ];
+
+    public function pharmacy()
+    {
+        return $this->belongsTo(Pharmacy::class);
+    }
+
+    public function getPharmacyNameAttribute()
+    {
+        return $this->pharmacy->pharmacieName;
+    }
 
     public static function validationRule()
     {

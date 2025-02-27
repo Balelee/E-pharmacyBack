@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends BaseController
 {
-    public function getProducts()    // Function de recuperation des produits
+    public function getProducts() // Function de recuperation des produits
     {
         $prductoQuery = Product::query()->orderBy('id', 'desc');
         if (! empty($this->seachValue)) {
@@ -34,6 +34,7 @@ class ProductController extends BaseController
         ]);
 
         $product = Product::create([
+            'pharmacy_id' => $request->pharmacy_id,
             'productImage' => null,
             'productName' => $request->productName,
             'description' => $request->description,
