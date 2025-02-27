@@ -15,7 +15,12 @@ class Pharmacy extends BaseModel
         'phone',
     ];
 
-    public static function validationRule()
+    public function pharmacien()
+    {
+        return $this->belongsTo(User::class, 'pharmacien_id');
+    }
+
+    public static function validationRules(): array
     {
         return [
 
@@ -24,5 +29,10 @@ class Pharmacy extends BaseModel
             'phone' => ['required', 'string'],
 
         ];
+    }
+
+    public function getPharmacienNameAttribute()
+    {
+        return $this->pharmacien->userName;
     }
 }

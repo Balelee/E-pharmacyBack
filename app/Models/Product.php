@@ -38,7 +38,7 @@ class Product extends BaseModel
         return $this->pharmacy->pharmacieName;
     }
 
-    public static function validationRule()
+    public static function validationRules(): array
     {
         return [
             'productImage' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
