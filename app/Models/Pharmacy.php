@@ -14,4 +14,15 @@ class Pharmacy extends BaseModel
         'adresse',
         'phone',
     ];
+
+    public static function validationRule()
+    {
+        return [
+
+            'pharmacieName' => ['required', 'string', 'max:255', 'unique:pharmacies,pharmacieName'],
+            'adresse' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string'],
+
+        ];
+    }
 }

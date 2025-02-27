@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 require __DIR__.'/Api/userRoutes.php';
 require __DIR__.'/Api/productRoutes.php';
+require __DIR__.'/Api/pharmacyRoutes.php';
