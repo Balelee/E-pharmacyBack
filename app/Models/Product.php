@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Enums\ProductType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends BaseModel
@@ -9,6 +10,7 @@ class Product extends BaseModel
     use HasFactory;
 
     protected $fillable = [
+        'pharmacy_id',
         'productImage',
         'productName',
         'description',
@@ -22,12 +24,24 @@ class Product extends BaseModel
 
     protected $casts = [
         'expiredDate' => 'date',
+        'productType' => ProductType::class,
+        'stock' => 'integer',
     ];
 
-    public static function validationRule()
+    public function pharmacy()
+    {
+        return $this->belongsTo(Pharmacy::class);
+    }
+
+    public function getPharmacyNameAttribute()
+    {
+        return $this->pharmacy->pharmacieName;
+    }
+
+    public static function validationRules(): array
     {
         return [
-            'productImage' => ['nullable','image','mimes:jpeg,png,jpg','max:2048'],
+            'productImage' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
             'productName' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric'],
@@ -39,8 +53,7 @@ class Product extends BaseModel
     }
 
     public function getImageUrlAttribute()
-{
-    return $this->productImage ? asset('storage/' . $this->productImage) : null;
-}
-
+    {
+        return $this->productImage ? asset('storage/'.$this->productImage) : null;
+    }
 }

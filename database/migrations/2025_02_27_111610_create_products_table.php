@@ -1,8 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Enums\ProductType;
+use App\Models\Pharmacy;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -13,11 +15,12 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Pharmacy::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('productImage')->nullable();
             $table->string('productName');
             $table->string('description');
             $table->double('price');
-            $table->string('productType');
+            $table->enum('productType', ProductType::values())->default(ProductType::default());
             $table->integer('stock');
             $table->date('expiredDate');
             $table->string('laborator');

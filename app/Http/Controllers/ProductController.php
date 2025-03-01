@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Http\Resources\ProductResource;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends BaseController
 {
-    public function getProducts()    // Function de recuperation des produits
+    public function getProducts() // Function de recuperation des produits
     {
         $prductoQuery = Product::query()->orderBy('id', 'desc');
         if (! empty($this->seachValue)) {
@@ -34,6 +34,7 @@ class ProductController extends BaseController
         ]);
 
         $product = Product::create([
+            'pharmacy_id' => $request->pharmacy_id,
             'productImage' => null,
             'productName' => $request->productName,
             'description' => $request->description,
@@ -45,54 +46,53 @@ class ProductController extends BaseController
         ]);
 
         if ($request->has('productImage') && is_string($request->productImage)) {
-        $imageData = file_get_contents($request->productImage);
-        $imageName = $product->id . '.png';
-        Storage::disk('public')->put('produits/' . $imageName, $imageData);
-        $imagePath = 'produits/' . $imageName;
-        $product->update(['productImage' => $imagePath]);
-    }
+            $imageData = file_get_contents($request->productImage);
+            $imageName = $product->id.'.png';
+            Storage::disk('public')->put('produits/'.$imageName, $imageData);
+            $imagePath = 'produits/'.$imageName;
+            $product->update(['productImage' => $imagePath]);
+        }
 
         return new ProductResource($product->refresh());
     }
 
     public function updateProduct(Product $product, Request $request)
-{
-    $request->validate([
-        'productImage' => Product::getValidationRule('productImage'),
-        'productName' => Product::getValidationRule('productName'),
-        'description' => Product::getValidationRule('description'),
-        'price' => Product::getValidationRule('price'),
-        'productType' => Product::getValidationRule('productType'),
-        'stock' => Product::getValidationRule('stock'),
-        'expiredDate' => Product::getValidationRule('expiredDate'),
-        'laborator' => Product::getValidationRule('laborator'),
-    ]);
+    {
+        $request->validate([
+            'productImage' => Product::getValidationRule('productImage'),
+            'productName' => Product::getValidationRule('productName'),
+            'description' => Product::getValidationRule('description'),
+            'price' => Product::getValidationRule('price'),
+            'productType' => Product::getValidationRule('productType'),
+            'stock' => Product::getValidationRule('stock'),
+            'expiredDate' => Product::getValidationRule('expiredDate'),
+            'laborator' => Product::getValidationRule('laborator'),
+        ]);
 
-    $product->update([
-        'productImage' => null,
-        'productName' => $request->productName,
-        'description' => $request->description,
-        'price' => $request->price,
-        'productType' => $request->productType,
-        'stock' => $request->stock,
-        'expiredDate' => $request->expiredDate,
-        'laborator' => $request->laborator,
-    ]);
+        $product->update([
+            'productImage' => null,
+            'productName' => $request->productName,
+            'description' => $request->description,
+            'price' => $request->price,
+            'productType' => $request->productType,
+            'stock' => $request->stock,
+            'expiredDate' => $request->expiredDate,
+            'laborator' => $request->laborator,
+        ]);
 
-    if ($request->has('productImage') && is_string($request->productImage)) {
-        $imageData = file_get_contents($request->productImage);
-        $imageName = $product->id . '.png';
-        if ($product->productImage && Storage::disk('public')->exists($product->productImage)) {
-            Storage::disk('public')->delete($product->productImage);
+        if ($request->has('productImage') && is_string($request->productImage)) {
+            $imageData = file_get_contents($request->productImage);
+            $imageName = $product->id.'.png';
+            if ($product->productImage && Storage::disk('public')->exists($product->productImage)) {
+                Storage::disk('public')->delete($product->productImage);
+            }
+            Storage::disk('public')->put('produits/'.$imageName, $imageData);
+            $imagePath = 'produits/'.$imageName;
+            $product->update(['productImage' => $imagePath]);
         }
-        Storage::disk('public')->put('produits/' . $imageName, $imageData);
-        $imagePath = 'produits/' . $imageName;
-        $product->update(['productImage' => $imagePath]);
+
+        return new ProductResource($product->refresh());
     }
-
-    return new ProductResource($product->refresh());
-}
-
 
     public function findProduct(Product $product)
     {

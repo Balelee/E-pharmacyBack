@@ -56,6 +56,7 @@ class UserController extends Controller
             'birthDate' => $request->birthDate,
             'birthPlace' => $request->birthPlace,
             'email' => $request->email,
+            'userType' => $request->userType,
             'password' => $request->password,
         ]);
 
