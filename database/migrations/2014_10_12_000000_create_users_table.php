@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('firstName');
             $table->string('phone', 20)->unique();
             $table->string('otp_code')->nullable();
+            $table->string('otp_expires_at')->nullable();
             $table->date('birthDate');
             $table->string('birthPlace');
             $table->string('email')->unique();

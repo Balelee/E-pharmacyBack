@@ -9,3 +9,4 @@ Route::put('/users/{user}', [UserController::class, 'updateUser']);
 Route::get('/users/{user}', [UserController::class, 'findUser']);
 Route::delete('/users/{user}', [UserController::class, 'deleteUser']);
 Route::post('/login', [UserController::class, 'loginUser']);
+Route::post('/verifyOtp', [UserController::class, 'verifyOtp']);
