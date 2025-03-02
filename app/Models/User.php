@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Enums\UserType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
@@ -53,6 +54,11 @@ class User extends Authenticatable
         'userType' => UserType::class,
         'password' => 'hashed',
     ];
+
+    public static function random(): Model
+    {
+        return static::inRandomOrder()->first();
+    }
 
     public static function getValidationRule(string $name): array
     {
