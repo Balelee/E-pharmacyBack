@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
-use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 use Twilio\Rest\Client;
+use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 
 class UserController extends Controller
 {
@@ -132,5 +133,35 @@ class UserController extends Controller
         $user->delete();
 
         return new UserResource($user);
+    }
+
+    public function redirectToGoogle()
+    {
+         return Socialite::driver('google')
+         ->with(['prompt' => 'select_account'])
+        ->stateless()
+        ->redirect();
+    }
+
+    public function handleGoogleCallback()
+    {
+        try {
+            $googleUser = Socialite::driver('google')->stateless()->user();
+            $user = User::where('email', $googleUser->getEmail())->first();
+            if (!$user) {
+                $user = User::create([
+                'google_id' => $googleUser->getId(),
+                'userName' => $googleUser->getName(),
+                'email' => $googleUser->getEmail(),
+            ]);
+            }
+            $user->tokens()->delete();
+            $token = $user->createToken('my-app-token')->plainTextToken;
+            $user->token = $token;
+
+            return new UserResource($user);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Authentification Google échouée', 'message' => $e->getMessage()], 500);
+        }
     }
 }

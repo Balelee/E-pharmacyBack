@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\Enums\UserType;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -14,17 +14,18 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->string('google_id')->nullable();
             $table->string('userName')->unique();
-            $table->string('lastName');
-            $table->string('firstName');
-            $table->string('phone', 20)->unique();
+            $table->string('lastName')->nullable();
+            $table->string('firstName')->nullable();
+            $table->string('phone', 20)->unique()->nullable();
             $table->string('otp_code')->nullable();
             $table->string('otp_expires_at')->nullable();
-            $table->date('birthDate');
-            $table->string('birthPlace');
+            $table->date('birthDate')->nullable();
+            $table->string('birthPlace')->nullable();
             $table->string('email')->unique();
-            $table->string('password');
-            $table->enum('userType', UserType::values())->default(UserType::default());
+            $table->string('password')->nullable();
+            $table->enum('userType', UserType::values())->default(UserType::default())->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

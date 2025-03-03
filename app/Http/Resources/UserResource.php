@@ -20,11 +20,11 @@ class UserResource extends JsonResource
             'lastName' => $this->lastName,
             'firstName' => $this->firstName,
             'phone' => $this->phone,
-            'birthDate' => $this->birthDate->format('d-m-Y'),
+            'birthDate' => $this->birthDate ? $this->birthDate->format('d-m-Y') : null,
             'birthPlace' => $this->birthPlace,
             'email' => $this->email,
             'userType' => $this->userType,
-            'userTypeLabel' => $this->userType->label(),
+            'userTypeLabel' => $this->userType ? $this->userType->label() : null,
             'token' => $this->token,
 
         ];
