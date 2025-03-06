@@ -2,14 +2,14 @@
 
 namespace Database\Factories;
 
-use App\Models\Pharmacy;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Order>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Payement>
  */
-class OrderFactory extends Factory
+class PayementFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,11 +19,9 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
+            'order_id' => Order::random() ?: Order::factory(),
             'user_id' => User::random() ?: User::factory(),
-            'pharmacy_id' => Pharmacy::random() ?: Pharmacy::factory(),
-            'dateOrder' => fake()->date(),
-            'priceTotal' => fake()->numerify('######'),
-            'adresLivraison' => fake()->address(),
+            'amount' => fake()->numerify('######'),
         ];
     }
 }
