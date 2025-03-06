@@ -21,6 +21,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'google_id',
         'userName',
         'lastName',
         'firstName',
@@ -31,6 +32,7 @@ class User extends Authenticatable
         'email',
         'password',
         'userType',
+        'otp_expires_at',
 
     ];
 
