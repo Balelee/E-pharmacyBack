@@ -19,57 +19,80 @@ class UserController extends Controller
         return UserResource::collection($users);
     }
 
-    public function loginUser(Request $request)
-    {
-        $request->validate([
-            'phone' => ['required', 'numeric', 'min:8'],
-            'password' => ['required', 'string', 'min:8'],
-        ]);
 
-        $user = User::where('phone', $request->phone)->first();
-        if (! $user || ! Hash::check($request->password, $user->password)) {
-            return response()->json(['message' => 'Numéro ou mot de passe incorrect.'], 401);
-        }
-        $otp = rand(100000, 999999);
-        $user->update([
-            'otp_code' => $otp,
-            'otp_expires_at' => Carbon::now()->addMinutes(5),
-        ]);
+
+public function loginUser(Request $request)
+{
+    $request->validate([
+        'phone' => ['required', 'numeric', 'min:8'],
+        'password' => ['required', 'string', 'min:8'],
+    ]);
+
+    $user = User::where('phone', $request->phone)->first();
+    if (! $user || ! Hash::check($request->password, $user->password)) {
+        return response()->json(['message' => 'Numéro ou mot de passe incorrect.'], 401);
+    }
+    $otp = rand(100000, 999999);
+    $user->update([
+        'otp_code' => $otp,
+        'otp_expires_at' => Carbon::now()->addMinutes(5),
+    ]);
+    try {
         $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
-        $twilio->messages->create($user->phone, [
+        $message = $twilio->messages->create($user->phone, [
             'from' => env('TWILIO_PHONE_NUMBER'),
             'body' => "Votre code OTP est : $otp",
         ]);
-
+        if (!$message->sid) {
+            return response()->json(['message' => 'Erreur lors de l\'envoi du SMS.'], 500);
+        }
+    } catch (\Exception $e) {
         return response()->json([
-            'message' => 'OTP envoyé. Veuillez vérifier votre téléphone.',
-        ]);
+            'message' => 'Erreur Twilio : ' . $e->getMessage()
+        ], 500);
+    }
+    $user->tokens()->delete();
+    $token = $user->createToken('phone-token')->plainTextToken;
+    $user->token = $token;
+    return response()->json([
+        'infos' => [
+            'message' => 'OTP envoyé sur : ' . $user->phone . '. Veuillez vérifier votre téléphone.',
+            'phone' => $user->phone
+        ]
+    ]);
+}
+
+
+   public function verifyOtp(Request $request)
+{
+    $request->validate([
+        'otp_code' => ['required', 'string', 'digits:6'],
+    ]);
+   $user = User::where('phone', $request->phone)
+    ->where('otp_code', $request->otp_code)
+   ->first();
+    if (!$user) {
+        return response()->json(['message' => 'Utilisateur non authentifié'], 401);
+    }
+    if (now()->greaterThan($user->otp_expires_at)) {
+        return response()->json(['message' => 'OTP expiré.'], 401);
     }
 
-    public function verifyOtp(Request $request)
+    $user->tokens()->delete();
+    $token = $user->createToken('my-app-token')->plainTextToken;
+    $user->token = $token;
+
+    return new UserResource($user);
+}
+
+
+ public function logoutUser(Request $request) // DECONNEXION DU USER
     {
-        $request->validate([
-            'otp_code' => ['required', 'numeric', 'digits:6'],
-        ]);
+        $request->user()->currentAccessToken()->delete();
+        return new UserResource($request);
 
-        $user = User::where('otp_code', $request->otp_code)->first();
-
-        if (! $user) {
-            return response()->json(['message' => 'OTP introuvable'], 404);
-        }
-        if (now()->greaterThan($user->otp_expires_at)) {
-            return response()->json(['message' => 'OTP expiré.'], 401);
-        }
-        $user->update([
-            'otp_code' => null,
-            'otp_expires_at' => null,
-        ]);
-        $user->tokens()->delete();
-        $token = $user->createToken('my-app-token')->plainTextToken;
-        $user->token = $token;
-
-        return new UserResource($user);
     }
+
 
     public function storeUser(User $user, Request $request)
     {

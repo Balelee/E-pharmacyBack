@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('phone', 20)->unique()->nullable();
             $table->string('otp_code')->nullable();
             $table->string('otp_expires_at')->nullable();
+            $table->timestamp('otp_verified_at')->nullable();
             $table->date('birthDate')->nullable();
             $table->string('birthPlace')->nullable();
             $table->string('email')->unique();
