@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
+use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
 {
@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
                 'userName' => 'Admin',
                 'lastName' => 'admin',
                 'firstName' => 'admins',
-                'phone' => '+22653380701',
+                'phone' => '+22653380709',
                 'birthDate' => '28-09-2000',
                 'birthPlace' => 'Koukouldi',
                 'email' => 'admins@gmail.com',
@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
                 'userName' => 'Franck',
                 'lastName' => 'Ulrich',
                 'firstName' => 'Kouame',
-                'phone' => '+22675572006',
+                'phone' => '+22675572009',
                 'birthDate' => '28-09-1997',
                 'birthPlace' => 'Abidjan',
                 'email' => 'franck@gmail.com',
