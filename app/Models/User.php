@@ -79,7 +79,7 @@ class User extends Authenticatable
             'birthDate' => ['required', 'date'],
             'birthPlace' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email'],
-            'password' => ['required', 'string', 'max:8'],
+            'password' => ['required', 'string', 'min:8'],
         ];
     }
 }

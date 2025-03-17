@@ -51,9 +51,6 @@ public function loginUser(Request $request)
             'message' => 'Erreur Twilio : ' . $e->getMessage()
         ], 500);
     }
-    $user->tokens()->delete();
-    $token = $user->createToken('phone-token')->plainTextToken;
-    $user->token = $token;
     return response()->json([
         'infos' => [
             'message' => 'OTP envoyé sur : ' . $user->phone . '. Veuillez vérifier votre téléphone.',
@@ -94,31 +91,40 @@ public function loginUser(Request $request)
     }
 
 
-    public function storeUser(User $user, Request $request)
-    {
-        $request->validate([
-            'userName' => User::getValidationRule('userName'),
-            'lastName' => User::getValidationRule('lastName'),
-            'firstName' => User::getValidationRule('firstName'),
-            'birthDate' => User::getValidationRule('birthDate'),
-            'birthPlace' => User::getValidationRule('birthPlace'),
-            'email' => User::getValidationRule('email'),
-            'password' => User::getValidationRule('password'),
-        ]);
+  public function storeUser(Request $request)
+{
+    $request->validate([
+        'phone' => ['required', 'numeric', 'unique:users,phone'],
+        'password' => User::getValidationRule('password'),
+    ]);
 
+        $otp = rand(100000, 999999);
         $user = User::create([
-            'userName' => $request->userName,
-            'lastName' => $request->lastName,
-            'firstName' => $request->firstName,
             'phone' => $request->phone,
-            'birthDate' => $request->birthDate,
-            'birthPlace' => $request->birthPlace,
-            'email' => $request->email,
-            'userType' => $request->userType,
-            'password' => $request->password,
+            'password' => Hash::make($request->password),
+            'otp_code' => $otp,
+            'otp_expires_at' => now()->addMinutes(5),
         ]);
-
-        return new UserResource($user);
+        try {
+            $twilio = new Client(env('TWILIO_SID'), env('TWILIO_AUTH_TOKEN'));
+            $message = $twilio->messages->create($user->phone, [
+                'from' => env('TWILIO_PHONE_NUMBER'),
+                'body' => "Votre code OTP est : $otp",
+            ]);
+            if (!$message->sid) {
+                return response()->json(['message' => 'Erreur lors de l\'envoi du SMS.'], 500);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erreur Twilio : ' . $e->getMessage()
+            ], 500);
+        }
+        return response()->json([
+            'infos' => [
+                'message' => 'OTP envoyé sur : ' . $user->phone . '. Veuillez vérifier votre téléphone.',
+                'phone' => $user->phone
+        ]
+    ]);
     }
 
     public function updateUser(User $user, Request $request)
