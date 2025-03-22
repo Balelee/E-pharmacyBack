@@ -164,33 +164,34 @@ public function loginUser(Request $request)
         return new UserResource($user);
     }
 
-    public function redirectToGoogle()
-    {
-         return Socialite::driver('google')
-         ->with(['prompt' => 'select_account'])
-        ->stateless()
-        ->redirect();
-    }
+//     public function redirectToGoogle()
+//     {
+//          return Socialite::driver('google')
+//          ->with(['prompt' => 'select_account'])
+//         ->stateless()
+//         ->redirect();
+//     }
 
-    public function handleGoogleCallback()
-    {
-        try {
-            $googleUser = Socialite::driver('google')->stateless()->user();
-            $user = User::where('email', $googleUser->getEmail())->first();
-            if (!$user) {
-                $user = User::create([
-                'google_id' => $googleUser->getId(),
-                'userName' => $googleUser->getName(),
-                'email' => $googleUser->getEmail(),
-            ]);
-            }
-            $user->tokens()->delete();
-            $token = $user->createToken('my-app-token')->plainTextToken;
-            $user->token = $token;
+//     public function handleGoogleCallback()
+//     {
+//         try {
+//             $googleUser = Socialite::driver('google')->stateless()->user();
+//             $user = User::where('email', $googleUser->getEmail())->first();
+//             if (!$user) {
+//                 $user = User::create([
+//                 'google_id' => $googleUser->getId(),
+//                 'userName' => $googleUser->getName(),
+//                 'email' => $googleUser->getEmail(),
+//             ]);
+//             }
+//             $user->tokens()->delete();
+//             $token = $user->createToken('my-app-token')->plainTextToken;
+//             $user->token = $token;
 
-            return new UserResource($user);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Authentification Google échouée', 'message' => $e->getMessage()], 500);
-        }
-    }
+//             return new UserResource($user);
+//         } catch (\Exception $e) {
+//             return response()->json(['error' => 'Authentification Google échouée', 'message' => $e->getMessage()], 500);
+//         }
+//     }
+// }
 }
