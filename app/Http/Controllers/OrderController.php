@@ -11,7 +11,7 @@ class OrderController extends BaseController
 {
     public function getOrders()
     {
-        $orders = Order::orderBy('id', 'desc')->get();
+        $orders = Order::with('details')->orderBy('id', 'desc')->get();
 
         return OrderResource::collection($orders);
     }
@@ -39,8 +39,7 @@ class OrderController extends BaseController
                 'priceUnitaire' => $item['price'],
             ]);
         }
-
-        return response()->json(['message' => 'Order placed successfully!', 'order' => $order], 201);
+        return $this->getOrders();
     }
 
     public function findOrder(Order $order)
