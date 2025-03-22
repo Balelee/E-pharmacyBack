@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Resources\ProductResource;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends BaseController
@@ -13,8 +13,7 @@ class ProductController extends BaseController
     {
         $prductoQuery = Product::query()->orderBy('id', 'desc');
         if (! empty($this->seachValue)) {
-            $prductoQuery->whereRaw('LOWER(productName) LIKE ?', ['%'.mb_strtolower($this->seachValue).'%'])
-                ->orWhereRaw('LOWER(productType) LIKE ?', ['%'.mb_strtolower($this->seachValue).'%']);
+            $prductoQuery->whereRaw('LOWER(productName) LIKE ?', ['%'.mb_strtolower($this->seachValue).'%']);
         }
 
         return ProductResource::collection($prductoQuery->paginate($this->limitPage));
@@ -23,7 +22,6 @@ class ProductController extends BaseController
     public function storeProduct(Request $request)
     {
         $request->validate([
-            'productImage' => Product::getValidationRule('productImage'),
             'productName' => Product::getValidationRule('productName'),
             'description' => Product::getValidationRule('description'),
             'price' => Product::getValidationRule('price'),

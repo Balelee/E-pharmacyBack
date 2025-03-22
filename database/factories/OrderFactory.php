@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Pharmacy;
 use App\Models\User;
+use App\Models\Pharmacy;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +21,6 @@ class OrderFactory extends Factory
         return [
             'user_id' => User::random() ?: User::factory(),
             'pharmacy_id' => Pharmacy::random() ?: Pharmacy::factory(),
-            'dateOrder' => fake()->date(),
             'priceTotal' => fake()->numerify('######'),
             'adresLivraison' => fake()->address(),
         ];

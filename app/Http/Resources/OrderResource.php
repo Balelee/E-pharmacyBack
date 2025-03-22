@@ -18,7 +18,7 @@ class OrderResource extends JsonResource
             'id' => $this->id,
             'user_id' => $this->user_id,
             'pharmacy_id' => $this->pharmacy_id,
-            'dateOrder' => $this->dateOrder->format('d-m-Y'),
+            'created_at' => $this->created_at,
             'orderStatus' => $this->orderStatus,
             'orderStatusLabel' => $this->orderStatus->label(),
         ];

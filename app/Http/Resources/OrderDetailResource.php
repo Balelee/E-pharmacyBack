@@ -18,7 +18,6 @@ class OrderDetailResource extends JsonResource
             'id' => $this->id,
             'order_id' => $this->order_id,
             'product_id' => $this->product_id,
-            'productName' => $this->product_name,
             'quantity' => $this->quantity,
             'priceUnitaire' => $this->priceUnitaire,
             'subtotal' => $this->sub_total,
