@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class OrderDetail extends Model
 {
@@ -13,6 +13,7 @@ class OrderDetail extends Model
         'order_id',
         'product_id',
         'quantity',
+        'oderDetailStatus',
         'priceUnitaire',
     ];
 
@@ -38,5 +39,10 @@ class OrderDetail extends Model
     public function getProductNameAttribute()
     {
         return $this->product->productName;
+    }
+
+    public function getPathUrlAttribute()
+    {
+        return asset('storage/'.$this->product->productImage);
     }
 }

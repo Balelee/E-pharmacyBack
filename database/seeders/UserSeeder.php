@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Support\Arr;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 
 class UserSeeder extends Seeder
 {

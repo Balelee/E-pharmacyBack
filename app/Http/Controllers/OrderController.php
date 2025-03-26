@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
-use App\Http\Resources\OrderResource;
 
 class OrderController extends BaseController
 {
@@ -29,7 +29,7 @@ class OrderController extends BaseController
             'user_id' => $request->user_id,
             'pharmacy_id' => 2,
             'priceTotal' => $request->total_price,
-            'adresLivraison' => $request->delivery_adress
+            'adresLivraison' => $request->delivery_adress,
         ]);
         foreach ($request->items as $item) {
             OrderDetail::create([
@@ -39,6 +39,7 @@ class OrderController extends BaseController
                 'priceUnitaire' => $item['price'],
             ]);
         }
+
         return $this->getOrders();
     }
 

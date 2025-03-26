@@ -19,8 +19,9 @@ class OrderResource extends JsonResource
             'user_id' => $this->user_id,
             'pharmacy_id' => $this->pharmacy_id,
             'orderStatus' => $this->orderStatus,
+            'priceTotal' => $this->priceTotal,
             'orderStatusLabel' => $this->orderStatus->label(),
-            'details' => OrderDetailResource::collection($this->details)
+            'details' => OrderDetailResource::collection($this->details),
         ];
     }
 }
