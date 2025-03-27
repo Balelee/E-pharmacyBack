@@ -2,15 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\PharmacyResource;
-use App\Models\Enums\UserType;
-use App\Models\Pharmacy;
 use App\Models\User;
+use App\Models\Pharmacy;
 use Illuminate\Http\Request;
+use App\Models\Enums\UserType;
+use App\Http\Resources\FliterResource;
+use App\Http\Resources\PharmacyResource;
 
 class PharmacyController extends BaseController
 {
     public function getPharmacies()
+    {
+        $pharmacies = Pharmacy::all();
+
+        return PharmacyResource::collection($pharmacies);
+
+    }
+
+     public function getFilter()
     {
         $pharmacies = Pharmacy::all();
 
@@ -52,7 +61,7 @@ class PharmacyController extends BaseController
         ]);
 
         $pharmacy->update([
-            'pharmacyName' => $request->pharmacyName,
+            'pharmacyName' => $request->phrmacieName,
             'address' => $request->address,
             'phone' => $request->phone,
         ]);
@@ -70,5 +79,11 @@ class PharmacyController extends BaseController
         $pharmacy->delete();
 
         return new PharmacyResource($pharmacy);
+    }
+
+    public function getPharFliter()
+    {
+        $pharmacies = Pharmacy::all();
+        return FliterResource::collection($pharmacies);
     }
 }
