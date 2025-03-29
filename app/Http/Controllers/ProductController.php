@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Http\Resources\ProductResource;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends BaseController
@@ -16,8 +16,8 @@ class ProductController extends BaseController
             $prductoQuery->whereRaw('LOWER(productName) LIKE ?', ['%'.mb_strtolower($this->seachValue).'%']);
         }
 
-        if ($request->has('pharmacy_id') && ! empty($request->pharmacy_id)) {
-            $prductoQuery->where('pharmacy_id', $request->pharmacy_id);
+        if ($request->has('filter') && ! empty($request->filter)) {
+            $prductoQuery->where('pharmacy_id', $request->filter);
         }
 
         return ProductResource::collection($prductoQuery->paginate($this->limitPage));
@@ -108,5 +108,4 @@ class ProductController extends BaseController
 
         return new ProductResource($product);
     }
-
 }

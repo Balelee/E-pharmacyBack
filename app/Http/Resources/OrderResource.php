@@ -21,6 +21,7 @@ class OrderResource extends JsonResource
             'orderStatus' => $this->orderStatus,
             'priceTotal' => $this->priceTotal,
             'orderStatusLabel' => $this->orderStatus->label(),
+            'orderStatusColor' => $this->orderStatus->color(),
             'details' => OrderDetailResource::collection($this->details),
         ];
     }
