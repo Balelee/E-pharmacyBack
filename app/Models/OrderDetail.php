@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Enums\OrderdetailStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class OrderDetail extends Model
+class OrderDetail extends BaseModel
 {
     use HasFactory;
 
@@ -13,12 +13,13 @@ class OrderDetail extends Model
         'order_id',
         'product_id',
         'quantity',
-        'oderDetailStatus',
+        'orderDetailStatus',
         'priceUnitaire',
     ];
 
     protected $casts = [
         'priceUnitaire' => 'double',
+        'orderDetailStatus' => OrderdetailStatus::class,
     ];
 
     public function product()

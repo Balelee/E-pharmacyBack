@@ -21,6 +21,8 @@ class OrderDetailResource extends JsonResource
             'productName' => $this->product_name,
             'quantity' => $this->quantity,
             'orderDetailStatus' => $this->orderDetailStatus,
+            'orderDetailLabel' => $this->orderDetailStatus->label(),
+            'orderDetailColor' => $this->orderDetailStatus->color(),
             'priceUnitaire' => $this->priceUnitaire,
             'productImage' => $this->path_url,
         ];

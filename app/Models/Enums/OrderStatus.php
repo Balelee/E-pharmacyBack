@@ -32,8 +32,7 @@ enum OrderStatus: string implements AdvancedEnumInterface
         return [
             self::TRAITE->value => '0xFF28A745',
             self::ANNULER->value => '0xFFDC3545',
-            self::ENATTENTE->value => '0xFFFFC107'
+            self::ENATTENTE->value => '0xFFFFC107',
         ];
     }
-
 }
