@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Enums\OrderStatus;
 use App\Models\Enums\PayementType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends BaseModel
 {
@@ -13,7 +14,6 @@ class Order extends BaseModel
     protected $fillable = [
         'user_id',
         'pharmacy_id',
-        'dateOrder',
         'priceTotal',
         'orderStatus',
         'adresLivraison',
@@ -21,9 +21,13 @@ class Order extends BaseModel
     ];
 
     protected $casts = [
-        'dateOrder' => 'date',
         'priceTotal' => 'double',
         'orderStatus' => OrderStatus::class,
         'modePayement' => PayementType::class,
     ];
+
+    public function details(): HasMany
+    {
+        return $this->hasMany(OrderDetail::class);
+    }
 }

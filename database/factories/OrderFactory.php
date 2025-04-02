@@ -21,7 +21,6 @@ class OrderFactory extends Factory
         return [
             'user_id' => User::random() ?: User::factory(),
             'pharmacy_id' => Pharmacy::random() ?: Pharmacy::factory(),
-            'dateOrder' => fake()->date(),
             'priceTotal' => fake()->numerify('######'),
             'adresLivraison' => fake()->address(),
         ];

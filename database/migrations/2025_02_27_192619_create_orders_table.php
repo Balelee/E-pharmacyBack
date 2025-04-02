@@ -19,11 +19,10 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignIdFor(Pharmacy::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string('dateOrder');
             $table->double('priceTotal');
             $table->enum('orderStatus', OrderStatus::values())->default(OrderStatus::default());
-            $table->string('adresLivraison');
-            $table->enum('modePayement', PayementType::values())->default(PayementType::default());
+            $table->string('adresLivraison')->nullable();
+            $table->enum('modePayement', PayementType::values())->default(PayementType::default())->nullable();
             $table->timestamps();
         });
     }

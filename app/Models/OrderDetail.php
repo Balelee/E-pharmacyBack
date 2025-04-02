@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Enums\OrderdetailStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class OrderDetail extends Model
+class OrderDetail extends BaseModel
 {
     use HasFactory;
 
@@ -13,11 +13,13 @@ class OrderDetail extends Model
         'order_id',
         'product_id',
         'quantity',
+        'orderDetailStatus',
         'priceUnitaire',
     ];
 
     protected $casts = [
         'priceUnitaire' => 'double',
+        'orderDetailStatus' => OrderdetailStatus::class,
     ];
 
     public function product()
@@ -38,5 +40,10 @@ class OrderDetail extends Model
     public function getProductNameAttribute()
     {
         return $this->product->productName;
+    }
+
+    public function getPathUrlAttribute()
+    {
+        return asset('storage/'.$this->product->productImage);
     }
 }

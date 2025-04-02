@@ -2,5 +2,6 @@
 
 return [
     'status.enattent' => 'En attente',
-    'status.valide' => 'Validé',
+    'status.traite' => 'Traité',
+    'status.annule' => 'Annulé',
 ];

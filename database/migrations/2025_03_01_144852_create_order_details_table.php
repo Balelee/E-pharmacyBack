@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Enums\OrderdetailStatus;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
@@ -17,6 +18,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Order::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignIdFor(Product::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->enum('orderDetailStatus', OrderdetailStatus::values())->default(OrderdetailStatus::default());
             $table->integer('quantity');
             $table->double('priceUnitaire');
             $table->timestamps();

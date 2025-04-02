@@ -9,12 +9,15 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends BaseController
 {
-    public function getProducts() // Function de recuperation des produits
+    public function getProducts(Request $request) // Function de recuperation des produits
     {
         $prductoQuery = Product::query()->orderBy('id', 'desc');
         if (! empty($this->seachValue)) {
-            $prductoQuery->whereRaw('LOWER(productName) LIKE ?', ['%'.mb_strtolower($this->seachValue).'%'])
-                ->orWhereRaw('LOWER(productType) LIKE ?', ['%'.mb_strtolower($this->seachValue).'%']);
+            $prductoQuery->whereRaw('LOWER(productName) LIKE ?', ['%'.mb_strtolower($this->seachValue).'%']);
+        }
+
+        if ($request->has('filter') && ! empty($request->filter)) {
+            $prductoQuery->where('pharmacy_id', $request->filter);
         }
 
         return ProductResource::collection($prductoQuery->paginate($this->limitPage));

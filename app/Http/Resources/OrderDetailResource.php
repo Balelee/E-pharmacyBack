@@ -20,8 +20,11 @@ class OrderDetailResource extends JsonResource
             'product_id' => $this->product_id,
             'productName' => $this->product_name,
             'quantity' => $this->quantity,
+            'orderDetailStatus' => $this->orderDetailStatus,
+            'orderDetailLabel' => $this->orderDetailStatus->label(),
+            'orderDetailColor' => $this->orderDetailStatus->color(),
             'priceUnitaire' => $this->priceUnitaire,
-            'subtotal' => $this->sub_total,
+            'productImage' => $this->path_url,
         ];
     }
 }
