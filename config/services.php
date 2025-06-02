@@ -37,4 +37,8 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
 
+    'ikoddi' => [
+    'api_key' => env('IKODDI_API_KEY'),
+],
+
 ];

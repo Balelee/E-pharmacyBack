@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 Route::prefix('users')->group(function () {
     Route::get('/', [UserController::class, 'getUsers']);
@@ -21,3 +21,6 @@ Route::prefix('users')->group(function () {
 
 Route::get('/auth/google', [UserController::class, 'redirectToGoogle']);
 Route::get('/auth/google/callback', [UserController::class, 'handleGoogleCallback']);
+Route::post('/send-sms-otp', [UserController::class, 'sendSms']);
+Route::post('/otp-verify', [UserController::class, 'OtpVerify']);
+

@@ -12,6 +12,7 @@
         "asvae/laravel-api-tester": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
+        "laravel/reverb": "^1.5",
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.18",
         "laravel/telescope": "^5.6",

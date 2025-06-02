@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
-use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
 use Twilio\Rest\Client;
+use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
+use Laravel\Socialite\Facades\Socialite;
 
 class UserController extends Controller
 {
@@ -192,4 +193,77 @@ class UserController extends Controller
     //         }
     //     }
     // }
+
+
+
+   public function sendSms(Request $request)
+{
+    $request->validate([
+        'identity' => 'required|string',
+    ]);
+
+    $organizationId = "10478339";
+    $otpAppId = "cmbc1fs6j0ee3fx2vj1fyravr";
+    $type = "sms";
+    $identity = urlencode($request->identity);
+
+    $url = "https://api.ikoddi.com/api/v1/groups/{$organizationId}/otp/{$otpAppId}/{$type}/{$identity}";
+
+    $response = Http::withHeaders([
+        'Content-Type' => 'application/json',
+        'x-api-key' => config('services.ikoddi.api_key'),
+    ])->post($url);
+
+    if ($response->successful()) {
+        return response()->json([
+            'message' => 'OTP envoyé avec succès.',
+            'data' => $response->json()
+        ]);
+    } else {
+        return response()->json([
+            'message' => 'Échec de l’envoi de l’OTP.',
+            'error' => $response->body()
+        ], $response->status());
+    }
+}
+
+
+
+public function OtpVerify(Request $request)
+{
+    $request->validate([
+        'otp' => 'required|string',
+        'identity' => 'required|string',
+        'verificationKey' => 'required|string',
+    ]);
+
+    $organizationId = "10478339";
+    $otpAppId = "cmbc1fs6j0ee3fx2vj1fyravr";
+
+    $url = "https://api.ikoddi.com/api/v1/groups/{$organizationId}/otp/{$otpAppId}/verify";
+
+    $payload = [
+        'otp' => $request->otp,
+        'identity' => $request->identity,
+        'verificationKey' => $request->verificationKey,
+    ];
+
+    $response = Http::withHeaders([
+        'Content-Type' => 'application/json',
+        'x-api-key' => config('services.ikoddi.api_key'),
+    ])->post($url, $payload);
+
+    if ($response->successful()) {
+        return response()->json([
+            'message' => 'Vérification OTP réussie.',
+            'data' => $response->json(),
+        ]);
+    } else {
+        return response()->json([
+            'error' => 'Échec de la vérification OTP.',
+            'details' => $response->body(),
+        ], $response->status());
+    }
+}
+
 }
