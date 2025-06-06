@@ -110,15 +110,29 @@ class ProductController extends BaseController
     }
 
 
+
     public function searchProduct(Request $request)
-{
-    $query = $request->get('query');
+    {
+        $query = $request->get('query');
+        $limit = $request->get('limit', 20);
+        $page = $request->get('page', 1);
+        $offset = ($page - 1) * $limit;
 
-    $products = Product::where('productName', 'like', '%' . $query . '%')
-        ->select('id', 'productName', 'price')
-        ->get();
+        $products = Product::where('productName', 'like', '%' . $query . '%')
+            ->select('id', 'productName', 'price')
+            ->offset($offset)
+            ->limit($limit)
+            ->get();
 
-    return response()->json($products);
-}
+        $total = Product::where('productName', 'like', '%' . $query . '%')->count();
+
+        return response()->json([
+            'data' => $products,
+            'total' => $total,
+            'page' => $page,
+            'limit' => $limit,
+        ]);
+    }
+
 
 }
