@@ -114,7 +114,7 @@ class ProductController extends BaseController
     public function searchProduct(Request $request)
     {
         $query = $request->get('query');
-        $limit = $request->get('limit', 20);
+        $limit = $request->get('limit', 30);
         $page = $request->get('page', 1);
         $offset = ($page - 1) * $limit;
 
