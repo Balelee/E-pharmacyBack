@@ -20,6 +20,8 @@ class PharmacyResource extends JsonResource
             'pharmacieName' => $this->pharmacieName,
             'adresse' => $this->adresse,
             'phone' => $this->phone,
+            'is_on_duty' => $this->is_on_duty,
+            'opening_hours' => OpeningHoursResource::collection($this->whenLoaded('openingHours')),
         ];
     }
 }

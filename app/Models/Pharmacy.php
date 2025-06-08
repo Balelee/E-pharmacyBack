@@ -13,6 +13,7 @@ class Pharmacy extends BaseModel
         'pharmacieName',
         'adresse',
         'phone',
+        'is_on_duty'
     ];
 
     public function pharmacien()
@@ -33,6 +34,10 @@ class Pharmacy extends BaseModel
 
     public function getPharmacienNameAttribute()
     {
-        return $this->pharmacien->userName;
+        return $this->pharmacien->userName ?? "";
+    }
+
+    public function openingHours() {
+        return $this->hasMany(OpeningHours::class);
     }
 }
