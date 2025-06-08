@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\Enums\ProductType;
 use App\Models\Pharmacy;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Enums\ProductType;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {

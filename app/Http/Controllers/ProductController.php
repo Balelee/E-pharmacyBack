@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Resources\ProductResource;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends BaseController
@@ -108,4 +108,31 @@ class ProductController extends BaseController
 
         return new ProductResource($product);
     }
+
+
+
+    public function searchProduct(Request $request)
+    {
+        $query = $request->get('query');
+        $limit = $request->get('limit', 30);
+        $page = $request->get('page', 1);
+        $offset = ($page - 1) * $limit;
+
+        $products = Product::where('productName', 'like', '%' . $query . '%')
+            ->select('id', 'productName', 'price')
+            ->offset($offset)
+            ->limit($limit)
+            ->get();
+
+        $total = Product::where('productName', 'like', '%' . $query . '%')->count();
+
+        return response()->json([
+            'data' => $products,
+            'total' => $total,
+            'page' => $page,
+            'limit' => $limit,
+        ]);
+    }
+
+
 }
