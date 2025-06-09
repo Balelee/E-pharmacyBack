@@ -7,15 +7,19 @@ use App\Models\Pharmacy;
 use Illuminate\Http\Request;
 use App\Models\Enums\UserType;
 use App\Http\Resources\FliterResource;
+use App\Http\Controllers\BaseController;
 use App\Http\Resources\PharmacyResource;
 
 class PharmacyController extends BaseController
 {
     public function getPharmacies()
     {
-        $pharmacies = Pharmacy::with('openingHours')->get();
+        $pharmacies = Pharmacy::with('openingHours');
+        if (! empty($this->seachValue)) {
+            $pharmacies->whereRaw('LOWER(pharmacieName) LIKE ?', ['%'.mb_strtolower($this->seachValue).'%']);
+        }
 
-        return PharmacyResource::collection($pharmacies);
+        return PharmacyResource::collection($pharmacies->paginate($this->limitPage));
 
     }
 

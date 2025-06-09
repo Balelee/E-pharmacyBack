@@ -15,22 +15,24 @@ class PharmacySeeder extends Seeder
     {
         $pharmaciesData = [
             [
-                'pharmacieName' => 'Pharmacie Centrale',
-                'adresse' => '123 Rue Principale',
-                'phone' => '0123456789',
-                'is_on_duty' => false,
-            ],
-            [
-                'pharmacieName' => 'Pharmacie du Parc',
-                'adresse' => '45 Avenue du Parc',
-                'phone' => '0987654321',
+                'pharmacieName' => 'Pharmacie Barkwendé',
+                'adresse' => 'Arrdt 8, Sect 35, Face à la cité de Rimkièta',
+                'phone' => '25 40 85 90',
+                'latitude'=> 12.37373,
+                'longitude'=> -1.60845,
                 'is_on_duty' => true,
             ],
-            // ajoute d’autres pharmacies si besoin
+            [
+                'pharmacieName' => 'Pharmacie Avenir',
+                'adresse' => '1200 Lgt, Av. BABANGUIDA face à la station Total',
+                'phone' => '25 36 13 38',
+                'latitude'=> 12.3752,
+                'longitude'=> -1.49387,
+                'is_on_duty' => true,
+            ],
         ];
 
         foreach ($pharmaciesData as $data) {
-            // Trouve un pharmacien aléatoire, ou null si aucun
             $pharmacienId = User::where('userType', UserType::PHARMACIEN->value)
                 ->inRandomOrder()
                 ->first()?->id;

@@ -13,7 +13,10 @@ class Pharmacy extends BaseModel
         'pharmacieName',
         'adresse',
         'phone',
-        'is_on_duty'
+        'is_on_duty',
+        'latitude',
+        'longitude',
+
     ];
 
     public function pharmacien()
@@ -40,4 +43,22 @@ class Pharmacy extends BaseModel
     public function openingHours() {
         return $this->hasMany(OpeningHours::class);
     }
+
+    public function getIsOpenNowAttribute()
+{
+    $now = now();
+    $today = $now->format('l'); // Monday, Tuesday...
+
+    $openingHour = $this->openingHours->firstWhere('day', $today);
+
+    if (!$openingHour || !$openingHour->opening_time || !$openingHour->closing_time) {
+        return false;
+    }
+
+    return $now->between(
+        now()->setTimeFromTimeString($openingHour->opening_time),
+        now()->setTimeFromTimeString($openingHour->closing_time)
+    );
+}
+
 }
