@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('phone');
             $table->decimal('latitude', 10, 5)->nullable();
             $table->decimal('longitude', 11, 5)->nullable();
-            $table->boolean('is_on_duty')->default(false); 
+            $table->boolean('is_on_duty')->default(false);
+            $table->string('groupe')->nullable();
             $table->timestamps();
         });
     }

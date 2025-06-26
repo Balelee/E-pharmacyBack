@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\User;
+use App\Models\BaseModel;
+use App\Models\OpeningHours;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Pharmacy extends BaseModel
@@ -16,6 +19,7 @@ class Pharmacy extends BaseModel
         'is_on_duty',
         'latitude',
         'longitude',
+        'groupe'
 
     ];
 

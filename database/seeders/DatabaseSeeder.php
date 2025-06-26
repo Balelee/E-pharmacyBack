@@ -10,7 +10,12 @@ use App\Models\Payement;
 use App\Models\Pharmacy;
 use App\Models\OrderDetail;
 use Illuminate\Database\Seeder;
+use Database\Seeders\UserSeeder;
+use Database\Seeders\ProductSeeder;
+use Database\Seeders\PharmacySeeder;
 use Illuminate\Support\Facades\Schema;
+use Database\Seeders\PharmacyGardeSeeder;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -27,6 +32,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductSeeder::class);
         OrderDetail::factory(3)->create();
         Payement::factory(3)->create();
+        $this->call(PharmacyGardeSeeder::class);
 
         Schema::enableForeignKeyConstraints();
     }
