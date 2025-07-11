@@ -7,15 +7,14 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Payement;
-use App\Models\Pharmacy;
 use App\Models\OrderDetail;
+use Database\Seeders\TipSeeder;
 use Illuminate\Database\Seeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\ProductSeeder;
 use Database\Seeders\PharmacySeeder;
 use Illuminate\Support\Facades\Schema;
 use Database\Seeders\PharmacyGardeSeeder;
-
 
 class DatabaseSeeder extends Seeder
 {
@@ -33,6 +32,7 @@ class DatabaseSeeder extends Seeder
         OrderDetail::factory(3)->create();
         Payement::factory(3)->create();
         $this->call(PharmacyGardeSeeder::class);
+        $this->call(TipSeeder::class);
 
         Schema::enableForeignKeyConstraints();
     }

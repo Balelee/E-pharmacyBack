@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\User;
-use App\Models\Pharmacy;
-use Illuminate\Http\Request;
-use App\Models\Enums\UserType;
 use App\Http\Resources\FliterResource;
-use App\Http\Controllers\BaseController;
 use App\Http\Resources\PharmacyResource;
+use App\Models\Enums\UserType;
+use App\Models\Pharmacy;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class PharmacyController extends BaseController
 {
@@ -84,6 +82,4 @@ class PharmacyController extends BaseController
 
         return FliterResource::collection($pharmacies);
     }
-
-   
 }

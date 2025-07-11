@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Pharmacy;
-use App\Models\OpeningHours;
 use App\Models\Enums\UserType;
+use App\Models\OpeningHours;
+use App\Models\Pharmacy;
+use App\Models\User;
 use Illuminate\Database\Seeder; // adapte selon ta config
-
 
 class PharmacySeeder extends Seeder
 {

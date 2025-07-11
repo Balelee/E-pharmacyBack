@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'Monday'    => 'Lundi',
-    'Tuesday'   => 'Mardi',
+    'Monday' => 'Lundi',
+    'Tuesday' => 'Mardi',
     'Wednesday' => 'Mercredi',
-    'Thursday'  => 'Jeudi',
-    'Friday'    => 'Vendredi',
-    'Saturday'  => 'Samedi',
-    'Sunday'    => 'Dimanche',
+    'Thursday' => 'Jeudi',
+    'Friday' => 'Vendredi',
+    'Saturday' => 'Samedi',
+    'Sunday' => 'Dimanche',
 ];

@@ -1,6 +1,7 @@
 <?php
 
 namespace Database\Seeders;
+
 use App\Models\PharmacyGarde;
 use Illuminate\Database\Seeder;
 
@@ -63,7 +64,6 @@ class PharmacyGardeSeeder extends Seeder
             ['2025-12-20', '2025-12-27', 'Groupe 3'],
             ['2025-12-27', '2026-01-03', 'Groupe 4'],
         ];
-
 
         foreach ($periodes as $periode) {
             PharmacyGarde::create([

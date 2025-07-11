@@ -11,6 +11,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @mixin IdeHelperUser
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PharmacyController;
 use App\Http\Controllers\PharmacyGardeController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/pharmacies', [PharmacyController::class, 'getPharmacies']);
 Route::post('/pharmacies', [PharmacyController::class, 'storePharmacy']);

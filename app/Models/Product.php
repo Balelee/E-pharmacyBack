@@ -5,6 +5,9 @@ namespace App\Models;
 use App\Models\Enums\ProductType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * @mixin IdeHelperProduct
+ */
 class Product extends BaseModel
 {
     use HasFactory;

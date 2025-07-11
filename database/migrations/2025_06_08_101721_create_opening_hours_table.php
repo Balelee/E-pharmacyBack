@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\Pharmacy;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Pharmacy::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('day'); // Monday, Tuesday...
-            $table->time('opening_time')->nullable();;
-            $table->time('closing_time')->nullable();;
+            $table->time('opening_time')->nullable();
+            $table->time('closing_time')->nullable();
             $table->timestamps();
         });
     }

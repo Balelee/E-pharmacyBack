@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
 use App\Models\Pharmacy;
+use App\Models\Product;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
@@ -4198,27 +4198,27 @@ class ProductSeeder extends Seeder
             ['productImage' => 'produits/default.jpg', 'productName' => 'ANGELA (EYELINER)', 'description' => '', 'price' => '1500', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
             ['productImage' => 'produits/default.jpg', 'productName' => 'ANGINOVAG AERO FL/10ML', 'description' => '', 'price' => '2820', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
             ['productImage' => 'produits/default.jpg', 'productName' => 'ANGIZAAR 25MG CPR BT/30', 'description' => '', 'price' => '10592', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ['productImage' => 'produits/default.jpg', 'productName' => 'ANGIZAAR 50MG CPR BT/30', 'description' => '', 'price' => '14415', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ['productImage' => 'produits/default.jpg', 'productName' => 'ANGIZAAR H CPR BT/30', 'description' => '', 'price' => '14395', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ['productImage' => 'produits/default.jpg', 'productName' => 'ANIOS EXCEL LINGETTES BT/50', 'description' => '', 'price' => '16350', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ['productImage' => 'produits/default.jpg', 'productName' => 'ANNEAU DENT SDL PAST RAIS 39353', 'description' => '', 'price' => '2000', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ['productImage' => 'produits/default.jpg', 'productName' => 'ANNEAU DENTITION CLE DES CHAMPS B/1', 'description' => '', 'price' => '5200', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ['productImage' => 'produits/default.jpg', 'productName' => 'ANNEAUX COCK BALL RING', 'description' => '', 'price' => '22500', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ['productImage' => 'produits/default.jpg', 'productName' => 'ANNEAUX COCK', 'description' => '', 'price' => '0', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ['productImage' => 'produits/default.jpg', 'productName' => 'ANNEAUX TRINAL FANTASY BTE/4', 'description' => '', 'price' => '22500', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ['productImage' => 'produits/default.jpg', 'productName' => 'ANOMEX SUPPO BT/10', 'description' => '', 'price' => '6255', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ['productImage' => 'produits/default.jpg', 'productName' => 'ANTADYS CPR BT/15', 'description' => '', 'price' => '3155', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ['productImage' => 'produits/default.jpg', 'productName' => 'ANTALCID 20MG GELULE BT/7', 'description' => '', 'price' => '1050', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ['productImage' => 'produits/default.jpg', 'productName' => 'ANTALCID 40MG INJ BT/1', 'description' => '', 'price' => '4610', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ['productImage' => 'produits/default.jpg', 'productName' => 'ANTALGEX T GELULE BT/ 20', 'description' => '', 'price' => '1960', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ['productImage' => 'produits/default.jpg', 'productName' => 'ANTHELIOS 50  SPRAY AEROSOL 125ML', 'description' => '', 'price' => '0', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ['productImage' => 'produits/default.jpg', 'productName' => 'ANTHELIOS XL 50  LAIT VELOUTE 300ML', 'description' => '', 'price' => '0', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ['productImage' => 'produits/default.jpg', 'productName' => 'ANTHELIOS XL 50  STICK LEVRES 4,7ML', 'description' => '', 'price' => '0', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ['productImage' => 'produits/default.jpg', 'productName' => 'ANTI REFLUX VALVE PR VOIE ENTERALE', 'description' => '', 'price' => '5167', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ['productImage' => 'produits/default.jpg', 'productName' => 'ANTI-KALIUM NA SACH BT/20', 'description' => '', 'price' => '24795', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ['productImage' => 'produits/default.jpg', 'productName' => 'ANTI-KALIUM NA SACH VRAC/1SACHET', 'description' => '', 'price' => '1250', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ['productImage' => 'produits/default.jpg', 'productName' => 'ANTI-MOUSTIQUE(citronnelle)30ML', 'description' => '', 'price' => '1500', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
-    ];
+            ['productImage' => 'produits/default.jpg', 'productName' => 'ANGIZAAR 50MG CPR BT/30', 'description' => '', 'price' => '14415', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
+            ['productImage' => 'produits/default.jpg', 'productName' => 'ANGIZAAR H CPR BT/30', 'description' => '', 'price' => '14395', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
+            ['productImage' => 'produits/default.jpg', 'productName' => 'ANIOS EXCEL LINGETTES BT/50', 'description' => '', 'price' => '16350', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
+            ['productImage' => 'produits/default.jpg', 'productName' => 'ANNEAU DENT SDL PAST RAIS 39353', 'description' => '', 'price' => '2000', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
+            ['productImage' => 'produits/default.jpg', 'productName' => 'ANNEAU DENTITION CLE DES CHAMPS B/1', 'description' => '', 'price' => '5200', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
+            ['productImage' => 'produits/default.jpg', 'productName' => 'ANNEAUX COCK BALL RING', 'description' => '', 'price' => '22500', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
+            ['productImage' => 'produits/default.jpg', 'productName' => 'ANNEAUX COCK', 'description' => '', 'price' => '0', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
+            ['productImage' => 'produits/default.jpg', 'productName' => 'ANNEAUX TRINAL FANTASY BTE/4', 'description' => '', 'price' => '22500', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
+            ['productImage' => 'produits/default.jpg', 'productName' => 'ANOMEX SUPPO BT/10', 'description' => '', 'price' => '6255', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
+            ['productImage' => 'produits/default.jpg', 'productName' => 'ANTADYS CPR BT/15', 'description' => '', 'price' => '3155', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
+            ['productImage' => 'produits/default.jpg', 'productName' => 'ANTALCID 20MG GELULE BT/7', 'description' => '', 'price' => '1050', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
+            ['productImage' => 'produits/default.jpg', 'productName' => 'ANTALCID 40MG INJ BT/1', 'description' => '', 'price' => '4610', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
+            ['productImage' => 'produits/default.jpg', 'productName' => 'ANTALGEX T GELULE BT/ 20', 'description' => '', 'price' => '1960', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
+            ['productImage' => 'produits/default.jpg', 'productName' => 'ANTHELIOS 50  SPRAY AEROSOL 125ML', 'description' => '', 'price' => '0', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
+            ['productImage' => 'produits/default.jpg', 'productName' => 'ANTHELIOS XL 50  LAIT VELOUTE 300ML', 'description' => '', 'price' => '0', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
+            ['productImage' => 'produits/default.jpg', 'productName' => 'ANTHELIOS XL 50  STICK LEVRES 4,7ML', 'description' => '', 'price' => '0', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
+            ['productImage' => 'produits/default.jpg', 'productName' => 'ANTI REFLUX VALVE PR VOIE ENTERALE', 'description' => '', 'price' => '5167', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
+            ['productImage' => 'produits/default.jpg', 'productName' => 'ANTI-KALIUM NA SACH BT/20', 'description' => '', 'price' => '24795', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
+            ['productImage' => 'produits/default.jpg', 'productName' => 'ANTI-KALIUM NA SACH VRAC/1SACHET', 'description' => '', 'price' => '1250', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
+            ['productImage' => 'produits/default.jpg', 'productName' => 'ANTI-MOUSTIQUE(citronnelle)30ML', 'description' => '', 'price' => '1500', 'stock' => 0, 'expiredDate' => '2025-12-31', 'laborator' => ''],
+        ];
 
     }
 

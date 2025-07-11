@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\BaseModel;
-use App\Models\OpeningHours;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * @mixin IdeHelperPharmacy
+ */
 class Pharmacy extends BaseModel
 {
     use HasFactory;
@@ -19,7 +19,7 @@ class Pharmacy extends BaseModel
         'is_on_duty',
         'latitude',
         'longitude',
-        'groupe'
+        'groupe',
 
     ];
 
@@ -41,28 +41,28 @@ class Pharmacy extends BaseModel
 
     public function getPharmacienNameAttribute()
     {
-        return $this->pharmacien->userName ?? "";
+        return $this->pharmacien->userName ?? '';
     }
 
-    public function openingHours() {
+    public function openingHours()
+    {
         return $this->hasMany(OpeningHours::class);
     }
 
     public function getIsOpenNowAttribute()
-{
-    $now = now();
-    $today = $now->format('l'); // Monday, Tuesday...
+    {
+        $now = now();
+        $today = $now->format('l'); // Monday, Tuesday...
 
-    $openingHour = $this->openingHours->firstWhere('day', $today);
+        $openingHour = $this->openingHours->firstWhere('day', $today);
 
-    if (!$openingHour || !$openingHour->opening_time || !$openingHour->closing_time) {
-        return false;
+        if (! $openingHour || ! $openingHour->opening_time || ! $openingHour->closing_time) {
+            return false;
+        }
+
+        return $now->between(
+            now()->setTimeFromTimeString($openingHour->opening_time),
+            now()->setTimeFromTimeString($openingHour->closing_time)
+        );
     }
-
-    return $now->between(
-        now()->setTimeFromTimeString($openingHour->opening_time),
-        now()->setTimeFromTimeString($openingHour->closing_time)
-    );
-}
-
 }
