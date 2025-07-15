@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Resources\ProductResource;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\BaseController;
 
 class ProductController extends BaseController
 {
     public function getProducts(Request $request) // Function de recuperation des produits
     {
-        $prductoQuery = Product::query()->orderBy('id', 'desc');
+        $prductoQuery = Product::query()->orderBy('id', 'asc');
         if (! empty($this->seachValue)) {
             $prductoQuery->whereRaw('LOWER(productName) LIKE ?', ['%'.mb_strtolower($this->seachValue).'%']);
         }

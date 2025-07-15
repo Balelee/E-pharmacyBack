@@ -25,7 +25,6 @@ class ProductResource extends JsonResource
             'productTypeLabel' => $this->productType->label(),
             'stock' => $this->stock,
             'productType' => $this->productType,
-            'expiredDate' => $this->expiredDate->format('d-m-Y'),
             'laborator' => $this->laborator,
         ];
     }
