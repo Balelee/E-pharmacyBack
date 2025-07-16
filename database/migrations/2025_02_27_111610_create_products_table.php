@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\Pharmacy;
 use App\Models\Enums\ProductType;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Pharmacy;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -21,9 +21,9 @@ return new class extends Migration
             $table->string('description');
             $table->double('price');
             $table->enum('productType', ProductType::values())->default(ProductType::default());
-            $table->integer('stock');
-            $table->date('expiredDate');
-            $table->string('laborator');
+            $table->integer('stock')->nullable();
+            $table->date('expiredDate')->nullable();
+            $table->string('laborator')->nullable();
             $table->timestamps();
         });
     }

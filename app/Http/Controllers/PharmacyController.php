@@ -13,17 +13,12 @@ class PharmacyController extends BaseController
 {
     public function getPharmacies()
     {
-        $pharmacies = Pharmacy::all();
+        $pharmacies = Pharmacy::with('openingHours');
+        if (! empty($this->seachValue)) {
+            $pharmacies->whereRaw('LOWER(pharmacieName) LIKE ?', ['%'.mb_strtolower($this->seachValue).'%']);
+        }
 
-        return PharmacyResource::collection($pharmacies);
-
-    }
-
-    public function getFilter()
-    {
-        $pharmacies = Pharmacy::all();
-
-        return PharmacyResource::collection($pharmacies);
+        return PharmacyResource::collection($pharmacies->paginate($this->limitPage));
 
     }
 

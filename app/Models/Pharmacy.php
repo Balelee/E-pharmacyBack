@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * @mixin IdeHelperPharmacy
+ */
 class Pharmacy extends BaseModel
 {
     use HasFactory;
@@ -13,6 +16,11 @@ class Pharmacy extends BaseModel
         'pharmacieName',
         'adresse',
         'phone',
+        'is_on_duty',
+        'latitude',
+        'longitude',
+        'groupe',
+
     ];
 
     public function pharmacien()
@@ -33,6 +41,28 @@ class Pharmacy extends BaseModel
 
     public function getPharmacienNameAttribute()
     {
-        return $this->pharmacien->userName;
+        return $this->pharmacien->userName ?? '';
+    }
+
+    public function openingHours()
+    {
+        return $this->hasMany(OpeningHours::class);
+    }
+
+    public function getIsOpenNowAttribute()
+    {
+        $now = now();
+        $today = $now->format('l'); // Monday, Tuesday...
+
+        $openingHour = $this->openingHours->firstWhere('day', $today);
+
+        if (! $openingHour || ! $openingHour->opening_time || ! $openingHour->closing_time) {
+            return false;
+        }
+
+        return $now->between(
+            now()->setTimeFromTimeString($openingHour->opening_time),
+            now()->setTimeFromTimeString($openingHour->closing_time)
+        );
     }
 }

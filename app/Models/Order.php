@@ -7,6 +7,9 @@ use App\Models\Enums\PayementType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @mixin IdeHelperOrder
+ */
 class Order extends BaseModel
 {
     use HasFactory;

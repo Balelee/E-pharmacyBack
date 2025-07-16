@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Models\Pharmacy;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,11 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cycles', function (Blueprint $table) {
+        Schema::create('opening_hours', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->date('date_debut');
-            $table->date('date_fin');
+            $table->foreignIdFor(Pharmacy::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->string('day'); // Monday, Tuesday...
+            $table->time('opening_time')->nullable();
+            $table->time('closing_time')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('cycles');
+        Schema::dropIfExists('opening_hours');
     }
 };

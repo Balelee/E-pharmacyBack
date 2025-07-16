@@ -25,3 +25,4 @@ require __DIR__.'/Api/pharmacyRoutes.php';
 require __DIR__.'/Api/orderRoutes.php';
 require __DIR__.'/Api/orderdetailRoutes.php';
 require __DIR__.'/Api/payementRoutes.php';
+require __DIR__.'/Api/tipRoute.php';
