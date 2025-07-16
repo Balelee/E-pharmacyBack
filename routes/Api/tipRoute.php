@@ -10,6 +10,7 @@ Route::get('/tips', [TipController::class, 'getTips']);
 
 // ROute pour rappel de medicament
 
-Route::get('/remenbers', [PilremberController::class, 'getRemenbers']);
-Route::post('/remenbers', [PilremberController::class, 'storeRemenber']);
+Route::get('/pilrembers', [PilremberController::class, 'getRemenbers']);
+Route::post('/pilrembers', [PilremberController::class, 'storeRemenber']);
+Route::delete('/pilrembers/{pilrember}', [PilremberController::class, 'deleteRemenber']);
 

@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -14,10 +14,10 @@ return new class extends Migration
     {
         Schema::create('pilrembers', function (Blueprint $table) {
             $table->id();
-              $table->foreignIdFor(User::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('medicine_name');
             $table->date('start_date');
-            $table->time('reminder_time');
+            $table->string('reminder_time');
             $table->string('form');
             $table->string('frequency');
             $table->timestamps();

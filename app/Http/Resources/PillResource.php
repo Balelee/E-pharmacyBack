@@ -14,12 +14,12 @@ class PillResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-         return [
+        return [
             'id' => $this->id,
             'medicine_name' => $this->medicine_name,
             'start_date' => $this->start_date->format('d-m-Y'),
-            'reminder_time' => substr($this->reminder_time, 0, 5),
-            'form' =>$this->form,
+            'reminder_time' => $this->reminder_time,
+            'form' => $this->form,
             'frequency' => $this->frequency,
         ];
     }

@@ -15,9 +15,9 @@ class TipResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "title" =>$this->title,
-            "content" =>$this->content,
-            "icon" =>$this->icon,
+            'title' => $this->title,
+            'content' => $this->content,
+            'icon' => $this->icon,
         ];
     }
 }
