@@ -241,6 +241,37 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Pilrember
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property string $medicine_name
+ * @property \Illuminate\Support\Carbon $start_date
+ * @property string $reminder_time
+ * @property string $form
+ * @property string $frequency
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User $user
+ * @method static \Database\Factories\PilremberFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Pilrember newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Pilrember newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Pilrember query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Pilrember whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pilrember whereForm($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pilrember whereFrequency($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pilrember whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pilrember whereMedicineName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pilrember whereReminderTime($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pilrember whereStartDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pilrember whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Pilrember whereUserId($value)
+ */
+	class Pilrember extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Product
  *
  * @mixin IdeHelperProduct
@@ -251,9 +282,9 @@ namespace App\Models{
  * @property string $description
  * @property float $price
  * @property \App\Models\Enums\ProductType $productType
- * @property int $stock
- * @property \Illuminate\Support\Carbon $expiredDate
- * @property string $laborator
+ * @property int|null $stock
+ * @property \Illuminate\Support\Carbon|null $expiredDate
+ * @property string|null $laborator
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read mixed $image_url
@@ -285,14 +316,22 @@ namespace App\Models{
  *
  * @mixin IdeHelperTip
  * @property int $id
+ * @property string|null $title
+ * @property string|null $icon
+ * @property string $content
+ * @property string|null $date_for
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static \Database\Factories\TipFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Tip newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tip newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tip query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Tip whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tip whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tip whereDateFor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tip whereIcon($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tip whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tip whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tip whereUpdatedAt($value)
  */
 	class Tip extends \Eloquent {}
