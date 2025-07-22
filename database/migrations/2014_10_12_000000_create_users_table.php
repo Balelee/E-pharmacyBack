@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\Enums\UserType;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -19,9 +19,6 @@ return new class extends Migration
             $table->string('lastName')->nullable();
             $table->string('firstName')->nullable();
             $table->string('phone', 20)->unique()->nullable();
-            $table->string('otp_code')->nullable();
-            $table->string('otp_expires_at')->nullable();
-            $table->timestamp('otp_verified_at')->nullable();
             $table->date('birthDate')->nullable();
             $table->string('birthPlace')->nullable();
             $table->string('email')->unique()->nullable();

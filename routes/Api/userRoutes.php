@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 Route::prefix('users')->group(function () {
     Route::get('/', [UserController::class, 'getUsers']);
@@ -10,7 +10,7 @@ Route::prefix('users')->group(function () {
     Route::get('/{user}', [UserController::class, 'findUser']);
     Route::delete('/{user}', [UserController::class, 'deleteUser']);
     Route::post('/login', [UserController::class, 'loginUser']);
-    Route::post('/verifyOtp', [UserController::class, 'verifyOtp']);
+    // Route::post('/verifyOtp', [UserController::class, 'verifyOtp']);
     // --------------------- ROUTES PROTEGER --------------------
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [UserController::class, 'logoutUser']);
@@ -19,5 +19,5 @@ Route::prefix('users')->group(function () {
 
 // --------------------- Auth Google Account --------------------
 
-Route::get('/auth/google', [UserController::class, 'redirectToGoogle']);
-Route::get('/auth/google/callback', [UserController::class, 'handleGoogleCallback']);
+// Route::get('/auth/google', [UserController::class, 'redirectToGoogle']);
+// Route::get('/auth/google/callback', [UserController::class, 'handleGoogleCallback']);
