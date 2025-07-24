@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
+use App\Models\Enums\OrderStatus;
 use App\Http\Resources\OrderResource;
 use App\Http\Controllers\BaseController;
 
@@ -69,6 +70,21 @@ class OrderController extends BaseController
     $order->save();
 
     return new OrderResource($order);
+}
+
+
+public function getOrderValide()
+{
+    $orders = Order::where('orderStatus', OrderStatus::TRAITE)->get();
+
+    return OrderResource::collection($orders);
+}
+
+public function getOrderAnnule()
+{
+    $orders = Order::where('orderStatus', OrderStatus::ANNULER)->get();
+
+    return OrderResource::collection($orders);
 }
 
 }

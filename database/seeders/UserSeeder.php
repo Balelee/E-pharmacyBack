@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Support\Arr;
+use App\Models\Enums\UserType;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -31,6 +32,18 @@ class UserSeeder extends Seeder
                 'birthPlace' => 'Abidjan',
                 'email' => 'franck@gmail.com',
                 'password' => '000000001',
+            ],
+
+             [
+                'userName' => 'Aymard',
+                'lastName' => 'Luc',
+                'firstName' => 'Kouame',
+                'phone' => '75572006',
+                'birthDate' => '28-09-1987',
+                'birthPlace' => 'Abidjan',
+                'userType' => UserType::PHARMACIEN->value,
+                'email' => 'ayarmad@gmail.com',
+                'password' => '00000000',
             ],
 
         ];
