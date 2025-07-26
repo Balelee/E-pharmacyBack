@@ -58,6 +58,7 @@ class UserController extends Controller
             'birthPlace' => User::getValidationRule('birthPlace'),
             'email' => User::getValidationRule('email'),
             'phone' => User::getValidationRule('phone'),
+            'password' => User::getValidationRule('password')
         ]);
 
         $user = User::create([
@@ -68,6 +69,7 @@ class UserController extends Controller
             'phone' => $request->phone,
             'birthDate' => $request->birthDate,
             'birthPlace' => $request->birthPlace,
+            'password' => $request->password
 
         ]);
         return new UserResource($user);

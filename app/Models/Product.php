@@ -15,7 +15,6 @@ class Product extends BaseModel
     use HasFactory;
 
     protected $fillable = [
-        'pharmacy_id',
         'productImage',
         'productName',
         'description',

@@ -77,7 +77,7 @@ class User extends Authenticatable
             'userName' => ['required', 'string', 'max:255'],
             'lastName' => ['required', 'string', 'max:255'],
             'firstName' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string'],
+            'phone' => ['required', 'string', 'max:12'],
             'password' => ['required', 'string'],
             'birthDate' => ['required', 'date'],
             'birthPlace' => ['required', 'string', 'max:255'],
