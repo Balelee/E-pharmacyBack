@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\User;
+use App\Models\BaseModel;
+use App\Models\OpeningHours;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**

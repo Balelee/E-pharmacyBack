@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\BaseModel;
+use App\Models\OrderDetail;
 use App\Models\Enums\OrderStatus;
 use App\Models\Enums\PayementType;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @mixin IdeHelperOrder

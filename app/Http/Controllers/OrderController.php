@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
+use App\Models\Enums\OrderStatus;
+use App\Http\Resources\OrderResource;
+use App\Http\Controllers\BaseController;
 
 class OrderController extends BaseController
 {
@@ -54,4 +56,35 @@ class OrderController extends BaseController
 
         return new OrderResource($order);
     }
+
+
+    // Action pour le pharmacien de valider ou annuler une commandé
+
+   public function updateStatus(Request $request, Order $order)
+{
+    $request->validate([
+        'orderStatus' => 'required|in:traite,annule',
+    ]);
+
+    $order->orderStatus = $request->orderStatus;
+    $order->save();
+
+    return new OrderResource($order);
+}
+
+
+public function getOrderValide()
+{
+    $orders = Order::where('orderStatus', OrderStatus::TRAITE)->get();
+
+    return OrderResource::collection($orders);
+}
+
+public function getOrderAnnule()
+{
+    $orders = Order::where('orderStatus', OrderStatus::ANNULER)->get();
+
+    return OrderResource::collection($orders);
+}
+
 }

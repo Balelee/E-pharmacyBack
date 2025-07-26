@@ -10,7 +10,7 @@ class ProductSeeder extends Seeder
 {
     protected function data(): array
     {
-       
+
 return [
     [
         'productImage' => '2_EN_1_EN_DENTS_BLANCHES.jpg',
