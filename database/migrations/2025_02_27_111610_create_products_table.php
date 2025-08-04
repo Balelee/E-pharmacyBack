@@ -15,15 +15,11 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Pharmacy::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('productImage')->nullable();
             $table->string('productName');
             $table->string('description');
             $table->double('price');
             $table->enum('productType', ProductType::values())->default(ProductType::default());
-            $table->integer('stock')->nullable();
-            $table->date('expiredDate')->nullable();
-            $table->string('laborator')->nullable();
             $table->timestamps();
         });
     }

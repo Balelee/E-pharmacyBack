@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Pharmacy;
 use Illuminate\Support\Arr;
 use App\Models\Enums\UserType;
 use Laravel\Sanctum\HasApiTokens;
@@ -70,6 +71,23 @@ class User extends Authenticatable
     {
         return Arr::get(static::validationRules(), $name, []);
     }
+
+
+    public function pharmacie()
+{
+    return $this->hasOne(Pharmacy::class, 'pharmacien_id');
+
+   
+}
+
+public function getPharmacieNameAttribute()
+{
+    if ($this->userType !== UserType::PHARMACIEN) {
+        return null;
+    }
+
+    return $this->pharmacie?->pharmacieName;
+}
 
     public static function validationRules()
     {

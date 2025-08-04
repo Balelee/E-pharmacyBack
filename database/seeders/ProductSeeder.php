@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Pharmacy;
 use App\Models\Product;
+use App\Models\Pharmacy;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
@@ -82384,9 +82384,7 @@ return [
         Product::truncate();
 
         foreach ($this->data() as $product) {
-            Product::create(array_merge($product, [
-                'pharmacy_id' => Pharmacy::inRandomOrder()->value('id'),
-            ]));
-        }
+        Product::create($product);
+    }
     }
 }

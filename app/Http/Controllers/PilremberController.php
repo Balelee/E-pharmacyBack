@@ -11,7 +11,9 @@ class PilremberController extends Controller
 {
     public function getRemenbers()
     {
-        $pills = Pilrember::where('user_id', auth()->id() ?? 1)->orderBy('id', 'desc')->get();
+        $user = auth()->user();
+        
+        $pills = Pilrember::where('user_id',  $user->id)->orderBy('id', 'desc')->get();
 
         return PillResource::collection($pills);
     }
@@ -26,8 +28,10 @@ class PilremberController extends Controller
             'form' => 'required|string',
         ]);
 
+         $user = auth()->user();
+
         $reminder = Pilrember::create([
-            'user_id' => auth()->id() ?? 1,
+            'user_id' => $user->id,
             'medicine_name' => $request->medicine_name,
             'start_date' => $request->start_date,
             'reminder_time' => $request->reminder_time,

@@ -26,10 +26,10 @@ class Pharmacy extends BaseModel
 
     ];
 
-    public function pharmacien()
+   public function pharmacien()
     {
-        return $this->belongsTo(User::class, 'pharmacien_id');
-    }
+    return $this->belongsTo(User::class, 'pharmacien_id');
+}
 
     public static function validationRules(): array
     {
