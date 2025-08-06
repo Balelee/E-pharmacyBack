@@ -11,6 +11,16 @@ use App\Http\Controllers\BaseController;
 
 class OrderController extends BaseController
 {
+
+
+    public function getAvailableOrders()
+{
+    $orders = Order::with('details')
+        ->where('orderStatus', OrderStatus::ENATTENTE)
+        ->orderBy('id', 'desc')
+        ->get();
+    return OrderResource::collection($orders);
+}
     public function getOrdersbyUser()
 {
     $user = auth()->user();
@@ -37,7 +47,6 @@ class OrderController extends BaseController
 
         $order = Order::create([
             'user_id' => $user->id,
-            'pharmacy_id' => 2,
             'priceTotal' => $request->total_price,
             'adresLivraison' => $request->delivery_adress,
         ]);

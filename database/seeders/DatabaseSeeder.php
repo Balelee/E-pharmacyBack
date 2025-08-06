@@ -4,12 +4,17 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Order;
-use App\Models\OrderDetail;
-use App\Models\Payement;
 use App\Models\User;
+use App\Models\Order;
+use App\Models\Payement;
+use App\Models\OrderDetail;
+use Database\Seeders\TipSeeder;
 use Illuminate\Database\Seeder;
+use Database\Seeders\UserSeeder;
+use Database\Seeders\ProductSeeder;
+use Database\Seeders\PharmacySeeder;
 use Illuminate\Support\Facades\Schema;
+use Database\Seeders\PharmacyGardeSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,10 +27,10 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         //  User::factory(3)->create();
         $this->call(PharmacySeeder::class);
-        Order::factory(3)->create();
+        // Order::factory(3)->create();
         $this->call(ProductSeeder::class);
-        OrderDetail::factory(3)->create();
-        Payement::factory(3)->create();
+        // OrderDetail::factory(3)->create();
+        // Payement::factory(3)->create();
         $this->call(PharmacyGardeSeeder::class);
         $this->call(TipSeeder::class);
 
