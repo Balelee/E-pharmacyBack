@@ -1,6 +1,8 @@
 <?php
 
+use App\Events\MessageSent;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\Mailer\Event\SentMessageEvent;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/test-event', function () {
+    broadcast(new MessageSent("Hello tout le monde depuis laravel"));
+    return "Evénement envoyé";
 });
