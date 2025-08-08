@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\TipResource;
-use App\Models\Tip;
 use Carbon\Carbon;
+use App\Models\Tip;
+use App\Http\Resources\TipResource;
+use App\Http\Controllers\BaseController;
 
-class TipController extends Controller
+
+class TipController extends BaseController
 {
     public function getTips()
     {

@@ -20,27 +20,12 @@ class Product extends BaseModel
         'description',
         'price',
         'productType',
-        'stock',
-        'expiredDate',
-        'laborator',
 
     ];
 
     protected $casts = [
-        'expiredDate' => 'date',
         'productType' => ProductType::class,
-        'stock' => 'integer',
     ];
-
-    public function pharmacy()
-    {
-        return $this->belongsTo(Pharmacy::class);
-    }
-
-    public function getPharmacyNameAttribute()
-    {
-        return $this->pharmacy->pharmacieName;
-    }
 
     public static function validationRules(): array
     {
@@ -50,7 +35,6 @@ class Product extends BaseModel
             'description' => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric'],
             'productType' => ['required', 'string', 'max:255'],
-            'stock' => ['required', 'double'],
             'expiredDate' => ['required', 'date'],
             'laborator' => ['required', 'string', 'max:255'],
         ];

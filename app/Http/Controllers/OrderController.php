@@ -11,12 +11,27 @@ use App\Http\Controllers\BaseController;
 
 class OrderController extends BaseController
 {
-    public function getOrders()
-    {
-        $orders = Order::with('details')->orderBy('id', 'desc')->get();
 
-        return OrderResource::collection($orders);
-    }
+
+    public function getAvailableOrders()
+{
+    $orders = Order::with('details')
+        ->where('orderStatus', OrderStatus::ENATTENTE)
+        ->orderBy('id', 'desc')
+        ->get();
+    return OrderResource::collection($orders);
+}
+    public function getOrdersbyUser()
+{
+    $user = auth()->user();
+    $orders = Order::with('details')
+        ->where('user_id', $user->id)
+        ->orderBy('id', 'desc')
+        ->get();
+
+    return OrderResource::collection($orders);
+}
+
 
     public function storeOrder(Request $request)
     {
@@ -27,9 +42,11 @@ class OrderController extends BaseController
             'items.*.quantity' => 'required|integer|min:1',
             'items.*.price' => 'required|numeric|min:0',
         ]);
+
+        $user = auth()->user();
+
         $order = Order::create([
-            'user_id' => $request->user_id,
-            'pharmacy_id' => 2,
+            'user_id' => $user->id,
             'priceTotal' => $request->total_price,
             'adresLivraison' => $request->delivery_adress,
         ]);
@@ -42,7 +59,7 @@ class OrderController extends BaseController
             ]);
         }
 
-        return $this->getOrders();
+        return $this->getOrdersbyUser();
     }
 
     public function findOrder(Order $order)
