@@ -348,9 +348,6 @@ namespace App\Models{
  * @property string|null $lastName
  * @property string|null $firstName
  * @property string|null $phone
- * @property string|null $otp_code
- * @property string|null $otp_expires_at
- * @property string|null $otp_verified_at
  * @property \Illuminate\Support\Carbon|null $birthDate
  * @property string|null $birthPlace
  * @property string|null $email
@@ -375,9 +372,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereGoogleId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLastName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereOtpCode($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereOtpExpiresAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereOtpVerifiedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
