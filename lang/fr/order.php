@@ -4,4 +4,5 @@ return [
     'status.enattent' => 'En attente',
     'status.traite' => 'Traité',
     'status.annule' => 'Annulé',
+    'status.expire' => 'Expiré',
 ];

@@ -2,9 +2,6 @@
 
 namespace App\Models\Enums;
 
-use App\Models\Enums\AdvancedEnum;
-use App\Models\Enums\AdvancedEnumInterface;
-
 enum UserType: string implements AdvancedEnumInterface
 {
     use AdvancedEnum;

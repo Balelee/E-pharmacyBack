@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\OrderDetailResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class OrderResource extends JsonResource

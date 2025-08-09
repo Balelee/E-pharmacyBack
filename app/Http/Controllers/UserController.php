@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\User;
-use Twilio\Rest\Client;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Socialite\Facades\Socialite;
 
 class UserController extends Controller
 {
@@ -19,7 +15,6 @@ class UserController extends Controller
 
         return UserResource::collection($users);
     }
-
 
     public function loginUser(Request $request) // CONNEXION DU USER
     {
@@ -37,6 +32,7 @@ class UserController extends Controller
         $user->tokens()->delete();
         $token = $user->createToken('my-app-token')->plainTextToken;
         $user->token = $token;
+
         return new UserResource($user);
     }
 
@@ -58,7 +54,7 @@ class UserController extends Controller
             'birthPlace' => User::getValidationRule('birthPlace'),
             'email' => User::getValidationRule('email'),
             'phone' => User::getValidationRule('phone'),
-            'password' => User::getValidationRule('password')
+            'password' => User::getValidationRule('password'),
         ]);
 
         $user = User::create([
@@ -69,9 +65,10 @@ class UserController extends Controller
             'phone' => $request->phone,
             'birthDate' => $request->birthDate,
             'birthPlace' => $request->birthPlace,
-            'password' => $request->password
+            'password' => $request->password,
 
         ]);
+
         return new UserResource($user);
     }
 
@@ -112,5 +109,4 @@ class UserController extends Controller
 
         return new UserResource($user);
     }
-
 }

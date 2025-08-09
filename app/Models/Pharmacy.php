@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\BaseModel;
-use App\Models\OpeningHours;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -16,26 +13,27 @@ class Pharmacy extends BaseModel
 
     protected $fillable = [
         'pharmacien_id',
-        'pharmacieName',
+        'name',
         'adresse',
         'phone',
         'is_on_duty',
-        'latitude',
-        'longitude',
+        'lat',
+        'lng',
         'groupe',
+        'socket_channel',
 
     ];
 
-   public function pharmacien()
+    public function pharmacien()
     {
-    return $this->belongsTo(User::class, 'pharmacien_id');
-}
+        return $this->belongsTo(User::class, 'pharmacien_id');
+    }
 
     public static function validationRules(): array
     {
         return [
 
-            'pharmacieName' => ['required', 'string', 'max:255', 'unique:pharmacies,pharmacieName'],
+            'name' => ['required', 'string', 'max:255', 'unique:pharmacies,name'],
             'adresse' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string'],
 

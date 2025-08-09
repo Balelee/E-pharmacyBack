@@ -1,12 +1,12 @@
 <?php
 
-use App\Models\User;
-use App\Models\Pharmacy;
 use App\Models\Enums\OrderStatus;
 use App\Models\Enums\PayementType;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Pharmacy;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -22,6 +22,10 @@ return new class extends Migration
             $table->double('priceTotal');
             $table->enum('orderStatus', OrderStatus::values())->default(OrderStatus::default());
             $table->string('adresLivraison')->nullable();
+            $table->decimal('lat', 10, 7)->nullable();
+            $table->decimal('lng', 10, 7)->nullable();
+            $table->integer('current_radius')->default(2); // en km
+            $table->timestamp('answered_at')->nullable();
             $table->enum('modePayement', PayementType::values())->default(PayementType::default())->nullable();
             $table->timestamps();
         });

@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\Tip;
 use App\Http\Resources\TipResource;
-use App\Http\Controllers\BaseController;
-
+use App\Models\Tip;
+use Carbon\Carbon;
 
 class TipController extends BaseController
 {

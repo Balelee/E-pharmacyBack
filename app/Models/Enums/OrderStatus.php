@@ -3,8 +3,6 @@
 namespace App\Models\Enums;
 
 use Illuminate\Support\Arr;
-use App\Models\Enums\AdvancedEnum;
-use App\Models\Enums\AdvancedEnumInterface;
 
 enum OrderStatus: string implements AdvancedEnumInterface
 {
@@ -13,6 +11,7 @@ enum OrderStatus: string implements AdvancedEnumInterface
     case ENATTENTE = 'enattent';
     case TRAITE = 'traite';
     case ANNULER = 'annule';
+    case EXPIRE = 'expire';
 
     public function label(): string
     {

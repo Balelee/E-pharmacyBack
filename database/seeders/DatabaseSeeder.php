@@ -4,17 +4,12 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\User;
 use App\Models\Order;
-use App\Models\Payement;
 use App\Models\OrderDetail;
-use Database\Seeders\TipSeeder;
+use App\Models\Payement;
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Database\Seeders\UserSeeder;
-use Database\Seeders\ProductSeeder;
-use Database\Seeders\PharmacySeeder;
 use Illuminate\Support\Facades\Schema;
-use Database\Seeders\PharmacyGardeSeeder;
 
 class DatabaseSeeder extends Seeder
 {
