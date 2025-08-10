@@ -85,7 +85,7 @@ namespace App\Models{
  * @mixin IdeHelperOrder
  * @property int $id
  * @property int $user_id
- * @property int $pharmacy_id
+ * @property int|null $pharmacy_id
  * @property float $priceTotal
  * @property \App\Models\Enums\OrderStatus $orderStatus
  * @property string|null $adresLivraison
@@ -276,35 +276,25 @@ namespace App\Models{
  *
  * @mixin IdeHelperProduct
  * @property int $id
- * @property int $pharmacy_id
  * @property string|null $productImage
  * @property string $productName
  * @property string $description
  * @property float $price
  * @property \App\Models\Enums\ProductType $productType
- * @property int|null $stock
- * @property \Illuminate\Support\Carbon|null $expiredDate
- * @property string|null $laborator
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read mixed $image_url
- * @property-read mixed $pharmacy_name
- * @property-read \App\Models\Pharmacy $pharmacy
  * @method static \Database\Factories\ProductFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product query()
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereExpiredDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereLaborator($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product wherePharmacyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product wherePrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereProductImage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereProductName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereProductType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Product whereStock($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Product whereUpdatedAt($value)
  */
 	class Product extends \Eloquent {}
@@ -356,8 +346,10 @@ namespace App\Models{
  * @property string|null $remember_token
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read mixed $pharmacie_name
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
+ * @property-read \App\Models\Pharmacy|null $pharmacie
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])

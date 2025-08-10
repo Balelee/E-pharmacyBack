@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Order;
 use App\Models\BaseModel;
 use App\Models\OpeningHours;
+use App\Models\OrderPharmacy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -68,4 +70,22 @@ class Pharmacy extends BaseModel
             now()->setTimeFromTimeString($openingHour->closing_time)
         );
     }
+
+
+    public function orderPharmacies()
+{
+    return $this->hasMany(OrderPharmacy::class);
+}
+
+
+/*
+De récupérer toutes les commandes associées à une pharmacie.
+De récupérer aussi les infos spécifiques à la relation (comme le status)
+*/
+public function orders()
+{
+    return $this->belongsToMany(Order::class, 'order_pharmacy')
+                ->withPivot('status')
+                ->withTimestamps();
+}
 }
