@@ -64,9 +64,14 @@ class BroadcastToPharmaciesJob implements ShouldQueue
 
 
         // Broadcast vers le channel général (pour test) ou vers chaque pharmacie
-        // foreach ($pharmacies as $p) {
-        //     broadcast(new ProduitDemande($order->id, $order->details, $this->radius));
-        // }
+        foreach ($pharmacies as $p) {
+            if ($p->id != null) {
+                broadcast(new ProduitDemande($order->id, $order->details, $this->radius, $p->id))
+                    ->toOthers();
+            }
+        }
+
+
 
         // Vérifier si réponse reçue => on stoppe
         $order->refresh();

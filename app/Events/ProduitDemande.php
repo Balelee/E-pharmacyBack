@@ -4,6 +4,7 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -18,19 +19,20 @@ class ProduitDemande implements ShouldBroadcastNow
 
     public $radius;
 
-    public function __construct($orderId, $produits, $radius)
+    public $pharmacyId;
+
+    public function __construct($orderId, $produits, $radius, $pharmacyId)
     {
         $this->orderId = $orderId;
         $this->produits = $produits;
         $this->radius = $radius;
+        $this->pharmacyId = $pharmacyId;
     }
 
     public function broadcastOn()
     {
-        // Ici, tu peux utiliser un channel public ou privé
-        // PublicChannel = Channel('pharmacies')
-        // mais mieux : channel par pharmacie, ex: pharmacy.{id}
-        return new Channel('pharmacies');
+        // return new PrivateChannel('pharmacies');
+        return new PrivateChannel('pharmacy.' . $this->pharmacyId);
     }
 
     public function broadcastAs()

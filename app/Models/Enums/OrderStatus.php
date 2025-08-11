@@ -15,7 +15,7 @@ enum OrderStatus: string implements AdvancedEnumInterface
 
     public function label(): string
     {
-        return __('order.status.'.$this->value);
+        return __('order.status.' . $this->value);
     }
 
     public static function default(): string
@@ -34,6 +34,7 @@ enum OrderStatus: string implements AdvancedEnumInterface
             self::TRAITE->value => '0xFF28A745',
             self::ANNULER->value => '0xFFDC3545',
             self::ENATTENTE->value => '0xFFFFC107',
+            self::EXPIRE->value => '0xFFDC3545',
         ];
     }
 }

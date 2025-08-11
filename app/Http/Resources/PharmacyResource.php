@@ -16,7 +16,7 @@ class PharmacyResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'pharmacien_id' => $this->pharmacien_name,
+            'pharmacien_id' => $this->pharmacien_id,
             'pharmacieName' => $this->name,
             'adresse' => $this->adresse,
             'phone' => $this->phone,

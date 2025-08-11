@@ -22,7 +22,7 @@ class OrderDetailResource extends JsonResource
             'quantity' => $this->quantity,
             'orderDetailStatus' => $this->orderDetailStatus,
             'orderDetailLabel' => $this->orderDetailStatus->label(),
-            'orderDetailColor' => $this->orderDetailStatus->color(),
+            'orderDetailColor' => $this->orderDetailStatus->color()??'0xFFDC3545',
             'priceUnitaire' => $this->priceUnitaire,
             'productImage' => $this->path_url,
         ];

@@ -83,7 +83,7 @@ class User extends Authenticatable
             return null;
         }
 
-        return $this->pharmacie?->pharmacieName;
+        return $this->pharmacie?->name;
     }
 
     public static function validationRules()
