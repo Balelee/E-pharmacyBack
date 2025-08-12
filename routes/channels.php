@@ -22,5 +22,5 @@ Broadcast::channel('chat', function ($message) {
 
 Broadcast::channel('pharmacy.{id}', function ($user, $id) {
     // Autorise uniquement si l'utilisateur appartient à la pharmacie demandée
-    return (int) $user->pharmacie->pharmacy_id === (int) $id;
+    return (int) $user->pharmacie->id === (int) $id;
 });

@@ -26,6 +26,7 @@ return new class extends Migration
             $table->decimal('lng', 10, 7)->nullable();
             $table->integer('current_radius')->default(2); // en km
             $table->timestamp('answered_at')->nullable();
+            $table->json('notified_pharmacies')->nullable();
             $table->enum('modePayement', PayementType::values())->default(PayementType::default())->nullable();
             $table->timestamps();
         });

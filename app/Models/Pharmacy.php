@@ -29,6 +29,25 @@ class Pharmacy extends BaseModel
         return $this->belongsTo(User::class, 'pharmacien_id');
     }
 
+    public function scopeNearby($query, $lat, $lng, $radiusKm = 2)
+{
+    return $query->selectRaw("
+            id, pharmacien_id, name, lat, lng,
+            (6371 * acos(
+                cos(radians(?)) * cos(radians(lat)) *
+                cos(radians(lng) - radians(?)) +
+                sin(radians(?)) * sin(radians(lat))
+            )) AS distance
+        ", [
+            $lat,
+            $lng,
+            $lat
+        ])
+        ->having('distance', '<=', $radiusKm)
+        ->orderBy('distance', 'asc');
+}
+
+
     public static function validationRules(): array
     {
         return [

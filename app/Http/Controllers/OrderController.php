@@ -55,6 +55,7 @@ class OrderController extends BaseController
             'lng' => $validated['lng'],
             'priceTotal' => $request->total_price,
             'adresLivraison' => $request->delivery_adress,
+            'notified_pharmacies' => [],
         ]);
         foreach ($request->items as $item) {
             OrderDetail::create([
@@ -66,43 +67,40 @@ class OrderController extends BaseController
         }
 
         // ➤ Sélectionner les pharmacies à 2 km
-        $pharmacies = Pharmacy::selectRaw("
-            id, name, lat, lng,
-            (6371 * acos(
-                cos(radians(?)) * cos(radians(lat)) *
-                cos(radians(lng) - radians(?)) +
-                sin(radians(?)) * sin(radians(lat))
-            )) AS distance
-        ", [
-            $order->lat,
-            $order->lng,
-            $order->lat
-        ])
-            ->having('distance', '<=', 2)
-            ->orderBy('distance', 'asc')
-            ->get();
+        $pharmacies = Pharmacy::nearby($order->lat, $order->lng, 2)->get();
 
         $liste = collect($pharmacies)
             ->map(function ($p, $index) {
                 return ($index + 1) . ' -> ' . $p->name;
             })
-            ->implode(",\n"); // retour à la ligne
+            ->implode(",\n");
 
         \Log::info("Pharmacies trouvées :\n" . $liste);
 
-
+        $newlyNotified = [];
         // ➤ Broadcast vers chaque pharmacie trouvée
 
         foreach ($pharmacies as $p) {
-            if ($p->id != null) {
+            if ($p->pharmacien_id != null) {
+                \Log::info("brodcast avant execution :" . $p->id);
                 broadcast(new ProduitDemande($order->id, $order->details, 2, $p->id))
                     ->toOthers();
+                \Log::info("brodcast apres execution :" . $p->pharmacien_id);
+                $newlyNotified[] = $p->id;
             }
         }
 
+        if (!empty($newlyNotified)) {
+            $order->update([
+                'notified_pharmacies' => $newlyNotified,
+            ]);
+        }
+
+
+
         // Dispatch du job différé qui lancera la prochaine phase (3 min plus tard),  Lancer le premier broadcast (2 km, elapsed = 0)
         dispatch(new BroadcastToPharmaciesJob($order->id, 2, 0))
-            ->delay(now()->addMinutes(1));
+            ->delay(now()->addSeconds(10));
 
         return response()->json([
             'message' => 'Commande créée et envoyée aux pharmacies proches.',

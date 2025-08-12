@@ -25,12 +25,14 @@ class Order extends BaseModel
         'current_radius',
         'answered_at',
         'modePayement',
+        'notified_pharmacies', 
     ];
 
     protected $casts = [
         'priceTotal' => 'double',
         'orderStatus' => OrderStatus::class,
         'modePayement' => PayementType::class,
+         'notified_pharmacies' => 'array',
     ];
 
     public function details(): HasMany
