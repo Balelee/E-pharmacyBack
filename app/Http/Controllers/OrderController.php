@@ -67,25 +67,14 @@ class OrderController extends BaseController
         }
 
         // ➤ Sélectionner les pharmacies à 2 km
-        $pharmacies = Pharmacy::nearby($order->lat, $order->lng, 2)->get();
-
-        $liste = collect($pharmacies)
-            ->map(function ($p, $index) {
-                return ($index + 1) . ' -> ' . $p->name;
-            })
-            ->implode(",\n");
-
-        \Log::info("Pharmacies trouvées :\n" . $liste);
-
+        $pharmacies = Pharmacy::nearby($order->lat, $order->lng, 2)->get();     
         $newlyNotified = [];
         // ➤ Broadcast vers chaque pharmacie trouvée
 
         foreach ($pharmacies as $p) {
             if ($p->pharmacien_id != null) {
-                \Log::info("brodcast avant execution :" . $p->id);
                 broadcast(new ProduitDemande($order->id, $order->details, 2, $p->id))
                     ->toOthers();
-                \Log::info("brodcast apres execution :" . $p->pharmacien_id);
                 $newlyNotified[] = $p->id;
             }
         }
@@ -100,7 +89,7 @@ class OrderController extends BaseController
 
         // Dispatch du job différé qui lancera la prochaine phase (3 min plus tard),  Lancer le premier broadcast (2 km, elapsed = 0)
         dispatch(new BroadcastToPharmaciesJob($order->id, 2, 0))
-            ->delay(now()->addSeconds(10));
+            ->delay(now()->addMinutes(3));
 
         return response()->json([
             'message' => 'Commande créée et envoyée aux pharmacies proches.',

@@ -52,17 +52,10 @@ class BroadcastToPharmaciesJob implements ShouldQueue
 
         \Log::info("Pharmacies trouvées par le job :\n" . $liste);
 
-
-
-
         foreach ($pharmacies as $p) {
-            \Log::info("ProduitDemande :" . $p->id);
             if ($p->pharmacien_id != null && !in_array($p->id, $alreadyNotified)) {
-                \Log::info("broadcast avant execution :" . $p->id);
                 broadcast(new ProduitDemande($order->id, $order->details, $this->radius, $p->id))
                     ->toOthers();
-                \Log::info("broadcast apres execution :" . $p->pharmacien_id);
-
                 $newlyNotified[] = $p->id;
             }
         }
@@ -85,11 +78,9 @@ class BroadcastToPharmaciesJob implements ShouldQueue
 
             return;
         }
-
-
         // Planifier l’étape suivante dans 3 minutes avec un rayon élargi
         $nextRadius = $this->radius + 2;
         dispatch(new BroadcastToPharmaciesJob($this->orderId, $nextRadius, $this->elapsedMinutes + 3))
-            ->delay(now()->addSeconds(10));
+            ->delay(now()->addMinutes(3));
     }
 }
