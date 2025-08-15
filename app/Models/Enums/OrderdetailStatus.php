@@ -3,8 +3,6 @@
 namespace App\Models\Enums;
 
 use Illuminate\Support\Arr;
-use App\Models\Enums\AdvancedEnum;
-use App\Models\Enums\AdvancedEnumInterface;
 
 enum OrderdetailStatus: string implements AdvancedEnumInterface
 {

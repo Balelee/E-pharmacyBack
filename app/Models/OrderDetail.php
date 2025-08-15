@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Order;
-use App\Models\Product;
-use App\Models\BaseModel;
 use App\Models\Enums\OrderdetailStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 

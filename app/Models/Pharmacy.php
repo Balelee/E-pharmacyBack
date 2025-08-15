@@ -2,11 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\User;
-use App\Models\Order;
-use App\Models\BaseModel;
-use App\Models\OpeningHours;
-use App\Models\OrderPharmacy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -18,26 +13,46 @@ class Pharmacy extends BaseModel
 
     protected $fillable = [
         'pharmacien_id',
-        'pharmacieName',
+        'name',
         'adresse',
         'phone',
         'is_on_duty',
-        'latitude',
-        'longitude',
+        'lat',
+        'lng',
         'groupe',
+        'socket_channel',
 
     ];
 
-   public function pharmacien()
+    public function pharmacien()
     {
-    return $this->belongsTo(User::class, 'pharmacien_id');
+        return $this->belongsTo(User::class, 'pharmacien_id');
+    }
+
+    public function scopeNearby($query, $lat, $lng, $radiusKm = 2)
+{
+    return $query->selectRaw("
+            id, pharmacien_id, name, lat, lng,
+            (6371 * acos(
+                cos(radians(?)) * cos(radians(lat)) *
+                cos(radians(lng) - radians(?)) +
+                sin(radians(?)) * sin(radians(lat))
+            )) AS distance
+        ", [
+            $lat,
+            $lng,
+            $lat
+        ])
+        ->having('distance', '<=', $radiusKm)
+        ->orderBy('distance', 'asc');
 }
+
 
     public static function validationRules(): array
     {
         return [
 
-            'pharmacieName' => ['required', 'string', 'max:255', 'unique:pharmacies,pharmacieName'],
+            'name' => ['required', 'string', 'max:255', 'unique:pharmacies,name'],
             'adresse' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string'],
 

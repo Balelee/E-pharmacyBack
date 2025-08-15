@@ -25,7 +25,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'userType' => $this->userType,
             'userTypeLabel' => $this->userType ? $this->userType->label() : null,
-            'pharmacieName'=> $this->pharmacie_name,
+            'pharmacie' => New PharmacyResource($this->pharmacie),
             'token' => $this->token,
 
         ];

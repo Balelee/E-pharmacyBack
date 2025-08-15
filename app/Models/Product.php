@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Pharmacy;
-use App\Models\BaseModel;
 use App\Models\Enums\ProductType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 

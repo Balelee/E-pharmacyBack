@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PillResource;
 use App\Models\Pilrember;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Resources\PillResource;
 
 class PilremberController extends Controller
 {
     public function getRemenbers()
     {
         $user = auth()->user();
-        
-        $pills = Pilrember::where('user_id',  $user->id)->orderBy('id', 'desc')->get();
+
+        $pills = Pilrember::where('user_id', $user->id)->orderBy('id', 'desc')->get();
 
         return PillResource::collection($pills);
     }
@@ -28,7 +27,7 @@ class PilremberController extends Controller
             'form' => 'required|string',
         ]);
 
-         $user = auth()->user();
+        $user = auth()->user();
 
         $reminder = Pilrember::create([
             'user_id' => $user->id,

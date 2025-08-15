@@ -2,14 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Pharmacy;
-use App\Models\BaseModel;
-use App\Models\OrderDetail;
-use App\Models\OrderPharmacy;
 use App\Models\Enums\OrderStatus;
 use App\Models\Enums\PayementType;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @mixin IdeHelperOrder
@@ -24,13 +20,19 @@ class Order extends BaseModel
         'priceTotal',
         'orderStatus',
         'adresLivraison',
+        'lat',
+        'lng',
+        'current_radius',
+        'answered_at',
         'modePayement',
+        'notified_pharmacies', 
     ];
 
     protected $casts = [
         'priceTotal' => 'double',
         'orderStatus' => OrderStatus::class,
         'modePayement' => PayementType::class,
+         'notified_pharmacies' => 'array',
     ];
 
     public function details(): HasMany
