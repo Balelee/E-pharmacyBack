@@ -19,9 +19,9 @@ class PharmacyFactory extends Factory
     public function definition(): array
     {
         return [
-            'pharmacien_id' => User::where('userType', UserType::PHARMACIEN->value)->inRandomOrder()->first()->id
-                ?? User::factory()->create(['userType' => UserType::PHARMACIEN->value])->id,
-            'pharmacieName' => fake()->name(),
+            'pharmacien_id' => User::where('type', UserType::PHARMACIEN->value)->inRandomOrder()->first()->id
+                ?? User::factory()->create(['type' => UserType::PHARMACIEN->value])->id,
+            'name' => fake()->name(),
             'adresse' => fake()->address(),
             'phone' => fake()->numerify('########'),
 

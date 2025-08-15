@@ -2030,7 +2030,7 @@ class PharmacySeeder extends Seeder
         ];
 
         foreach ($pharmaciesData as $data) {
-            $pharmacienId = User::where('userType', UserType::PHARMACIEN->value)
+            $pharmacienId = User::where('type', UserType::PHARMACIEN->value)
                 ->inRandomOrder()
                 ->first()?->id;
 

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Order::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignIdFor(Product::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->enum('orderDetailStatus', OrderdetailStatus::values())->default(OrderdetailStatus::default());
+            $table->enum('status', OrderdetailStatus::values())->default(OrderdetailStatus::default());
             $table->integer('quantity');
             $table->double('priceUnitaire');
             $table->timestamps();

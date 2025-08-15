@@ -19,11 +19,11 @@ class Payement extends Model
         'user_id',
         'amount',
         'methodPayement',
-        'payementStatus',
+        'status',
     ];
 
     protected $casts = [
-        'payementStatus' => PayementStatus::class,
+        'status' => PayementStatus::class,
         'methodPayement' => PayementType::class,
     ];
 }

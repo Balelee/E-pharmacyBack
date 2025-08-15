@@ -21,8 +21,8 @@ class PayementResource extends JsonResource
             'amount' => $this->amount,
             'methodPayement' => $this->methodPayement,
             'methodPayementLabel' => $this->methodPayement->label(),
-            'payementStatus' => $this->payementStatus,
-            'payementStatusLabel' => $this->payementStatus->label(),
+            'status' => $this->status,
+            'statusLabel' => $this->status->label(),
         ];
     }
 }

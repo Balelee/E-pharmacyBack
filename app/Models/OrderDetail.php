@@ -16,13 +16,13 @@ class OrderDetail extends BaseModel
         'order_id',
         'product_id',
         'quantity',
-        'orderDetailStatus',
+        'status',
         'priceUnitaire',
     ];
 
     protected $casts = [
         'priceUnitaire' => 'double',
-        'orderDetailStatus' => OrderdetailStatus::class,
+        'status' => OrderdetailStatus::class,
     ];
 
     public function product()

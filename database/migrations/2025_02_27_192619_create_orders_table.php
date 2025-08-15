@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignIdFor(Pharmacy::class)->nullable()->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->double('priceTotal');
-            $table->enum('orderStatus', OrderStatus::values())->default(OrderStatus::default());
+            $table->enum('status', OrderStatus::values())->default(OrderStatus::default());
             $table->string('adresLivraison')->nullable();
             $table->decimal('lat', 10, 7)->nullable();
             $table->decimal('lng', 10, 7)->nullable();

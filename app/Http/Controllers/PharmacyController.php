@@ -15,7 +15,7 @@ class PharmacyController extends BaseController
     {
         $pharmacies = Pharmacy::with('openingHours');
         if (! empty($this->seachValue)) {
-            $pharmacies->whereRaw('LOWER(pharmacieName) LIKE ?', ['%'.mb_strtolower($this->seachValue).'%']);
+            $pharmacies->whereRaw('LOWER(name) LIKE ?', ['%'.mb_strtolower($this->seachValue).'%']);
         }
 
         return PharmacyResource::collection($pharmacies->paginate($this->limitPage));
@@ -25,7 +25,7 @@ class PharmacyController extends BaseController
     public function storePharmacy(Request $request)
     {
         $request->validate([
-            'pharmacieName' => Pharmacy::getValidationRule('pharmacieName'),
+            'name' => Pharmacy::getValidationRule('name'),
             'adresse' => Pharmacy::getValidationRule('adresse'),
             'phone' => Pharmacy::getValidationRule('phone'),
         ]);
@@ -39,7 +39,7 @@ class PharmacyController extends BaseController
 
         $pharmacy = Pharmacy::create([
             'pharmacien_id' => $request->pharmacien_id,
-            'pharmacieName' => $request->pharmacieName,
+            'name' => $request->name,
             'adresse' => $request->adresse,
             'phone' => $request->phone,
         ]);
@@ -50,7 +50,7 @@ class PharmacyController extends BaseController
     public function updatePharmacy(Pharmacy $pharmacy, Request $request)
     {
         $request->validate([
-            'pharmacieName' => Pharmacy::getValidationRule('pharmacieName'),
+            'name' => Pharmacy::getValidationRule('name'),
             'adresse' => Pharmacy::getValidationRule('adresse'),
             'phone' => Pharmacy::getValidationRule('phone'),
         ]);

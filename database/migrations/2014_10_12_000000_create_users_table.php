@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('birthPlace')->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('password')->nullable();
-            $table->enum('userType', UserType::values())->default(UserType::default())->nullable();
+            $table->enum('type', UserType::values())->default(UserType::default())->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

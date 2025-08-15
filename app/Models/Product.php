@@ -13,8 +13,8 @@ class Product extends BaseModel
     use HasFactory;
 
     protected $fillable = [
-        'productImage',
-        'productName',
+        'image',
+        'name',
         'description',
         'price',
         'productType',
@@ -28,8 +28,8 @@ class Product extends BaseModel
     public static function validationRules(): array
     {
         return [
-            'productImage' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
-            'productName' => ['required', 'string', 'max:255'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
+            'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric'],
             'productType' => ['required', 'string', 'max:255'],
@@ -40,6 +40,6 @@ class Product extends BaseModel
 
     public function getImageUrlAttribute()
     {
-        return $this->productImage ? asset('storage/'.$this->productImage) : null;
+        return $this->image ? asset('storage/'.$this->image) : null;
     }
 }
