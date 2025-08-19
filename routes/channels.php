@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Order;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -23,4 +24,9 @@ Broadcast::channel('chat', function ($message) {
 Broadcast::channel('pharmacy.{id}', function ($user, $id) {
     // Autorise uniquement si l'utilisateur appartient à la pharmacie demandée
     return (int) $user->pharmacie->id === (int) $id;
+});
+Broadcast::channel('client.{order_id}', function ($user, $order_id) {
+    return Order::where('id', $order_id)
+        ->where('user_id', $user->id)
+        ->exists();
 });

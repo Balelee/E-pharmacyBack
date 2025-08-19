@@ -17,12 +17,12 @@ class Product extends BaseModel
         'name',
         'description',
         'price',
-        'productType',
+        'type',
 
     ];
 
     protected $casts = [
-        'productType' => ProductType::class,
+        'type' => ProductType::class,
     ];
 
     public static function validationRules(): array

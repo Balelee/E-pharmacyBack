@@ -23,7 +23,7 @@ class UserResource extends JsonResource
             'birthDate' => $this->birthDate ? $this->birthDate->format('d-m-Y') : null,
             'birthPlace' => $this->birthPlace,
             'email' => $this->email,
-            'type' => $this->userType,
+            'type' => $this->type,
             'userTypeLabel' => $this->userType ? $this->userType->label() : null,
             'pharmacie' => New PharmacyResource($this->pharmacie),
             'token' => $this->token,
