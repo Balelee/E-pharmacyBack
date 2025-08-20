@@ -18,7 +18,7 @@ class Order extends BaseModel
         'user_id',
         'pharmacy_id',
         'priceTotal',
-        'orderStatus',
+        'status',
         'adresLivraison',
         'lat',
         'lng',
@@ -30,7 +30,7 @@ class Order extends BaseModel
 
     protected $casts = [
         'priceTotal' => 'double',
-        'orderStatus' => OrderStatus::class,
+        'status' => OrderStatus::class,
         'modePayement' => PayementType::class,
          'notified_pharmacies' => 'array',
     ];

@@ -17,7 +17,7 @@ class OrderController extends BaseController
     public function getAvailableOrders()
     {
         $orders = Order::with('details')
-            ->where('orderStatus', OrderStatus::ENATTENTE)
+            ->where('status', OrderStatus::ENATTENTE)
             ->orderBy('id', 'desc')
             ->get();
 
@@ -114,10 +114,10 @@ class OrderController extends BaseController
     public function updateStatus(Request $request, Order $order)
     {
         $request->validate([
-            'orderStatus' => 'required|in:traite,annule',
+            'status' => 'required|in:traite,annule',
         ]);
 
-        $order->orderStatus = $request->orderStatus;
+        $order->status = $request->status;
         $order->save();
 
         return new OrderResource($order);
@@ -125,14 +125,14 @@ class OrderController extends BaseController
 
     public function getOrderValide()
     {
-        $orders = Order::where('orderStatus', OrderStatus::TRAITE)->get();
+        $orders = Order::where('status', OrderStatus::TRAITE)->get();
 
         return OrderResource::collection($orders);
     }
 
     public function getOrderAnnule()
     {
-        $orders = Order::where('orderStatus', OrderStatus::ANNULER)->get();
+        $orders = Order::where('status', OrderStatus::ANNULER)->get();
 
         return OrderResource::collection($orders);
     }

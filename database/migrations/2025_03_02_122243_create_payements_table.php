@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->integer('amount');
             $table->enum('methodPayement', PayementType::values())->default(PayementType::default());
-            $table->enum('payementStatus', PayementStatus::values())->default(PayementStatus::default());
+            $table->enum('status', PayementStatus::values())->default(PayementStatus::default());
             $table->timestamps();
         });
     }

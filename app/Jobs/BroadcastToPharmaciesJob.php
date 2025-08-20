@@ -33,7 +33,7 @@ class BroadcastToPharmaciesJob implements ShouldQueue
     public function handle()
     {
         $order = Order::find($this->orderId);
-        if (! $order || $order->orderStatus !== OrderStatus::ENATTENTE) {
+        if (! $order || $order->status !== OrderStatus::ENATTENTE) {
             return; // stop si la commande est déjà traitée ou inexistante
         }
         // Liste déjà notifiée
@@ -68,13 +68,13 @@ class BroadcastToPharmaciesJob implements ShouldQueue
 
         // Vérifier si réponse reçue => on stoppe
         $order->refresh();
-        if ($order->orderStatus !== OrderStatus::ENATTENTE) {
+        if ($order->status !== OrderStatus::ENATTENTE) {
             return;
         }
 
         // Timeout global
         if ($this->elapsedMinutes >= 10) {
-            $order->update(['orderStatus' => OrderStatus::EXPIRE->value]);
+            $order->update(['status' => OrderStatus::EXPIRE->value]);
 
             return;
         }

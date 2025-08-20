@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
                 'phone' => '75572006',
                 'birthDate' => '28-09-1987',
                 'birthPlace' => 'Abidjan',
-                'userType' => UserType::PHARMACIEN->value,
+                'type' => UserType::PHARMACIEN->value,
                 'email' => 'ayarmad@gmail.com',
                 'password' => '00000000',
             ],

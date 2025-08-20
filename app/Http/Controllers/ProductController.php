@@ -12,7 +12,7 @@ class ProductController extends BaseController
     {
         $prductoQuery = Product::query()->orderBy('id', 'asc');
         if (! empty($this->seachValue)) {
-            $prductoQuery->whereRaw('LOWER(productName) LIKE ?', ['%'.mb_strtolower($this->seachValue).'%']);
+            $prductoQuery->whereRaw('LOWER(name) LIKE ?', ['%'.mb_strtolower($this->seachValue).'%']);
         }
 
         return ProductResource::collection($prductoQuery->paginate($this->limitPage));
@@ -25,13 +25,13 @@ class ProductController extends BaseController
         $page = $request->get('page', 1);
         $offset = ($page - 1) * $limit;
 
-        $products = Product::where('productName', 'like', '%'.$query.'%')
-            ->select('id', 'productName', 'price')
+        $products = Product::where('name', 'like', '%'.$query.'%')
+            ->select('id', 'name', 'price')
             ->offset($offset)
             ->limit($limit)
             ->get();
 
-        $total = Product::where('productName', 'like', '%'.$query.'%')->count();
+        $total = Product::where('name', 'like', '%'.$query.'%')->count();
 
         return response()->json([
             'data' => $products,

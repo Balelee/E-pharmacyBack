@@ -34,7 +34,7 @@ class User extends Authenticatable
         'otp_code',
         'email',
         'password',
-        'userType',
+        'type',
         'otp_expires_at',
         'otp_verified_at',
 
@@ -57,7 +57,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'birthDate' => 'date',
-        'userType' => UserType::class,
+        'type' => UserType::class,
         'password' => 'hashed',
     ];
 
