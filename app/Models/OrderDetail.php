@@ -42,11 +42,11 @@ class OrderDetail extends BaseModel
 
     public function getProductNameAttribute()
     {
-        return $this->product->productName;
+        return $this->product->name;
     }
 
     public function getPathUrlAttribute()
     {
-        return asset('storage/'.$this->product->productImage);
+        return asset('storage/'.$this->product->image);
     }
 }

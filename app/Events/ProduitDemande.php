@@ -2,6 +2,8 @@
 
 namespace App\Events;
 
+use App\Http\Resources\OrderResource;
+use App\Models\Order;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -38,5 +40,10 @@ class ProduitDemande implements ShouldBroadcastNow
     public function broadcastAs()
     {
         return 'produit.demande';
+    }
+    public function broadcastWith()
+    {
+        $order = Order::findOrFail($this->orderId);
+        return ["order" => new OrderResource($order)];
     }
 }

@@ -15,7 +15,7 @@ class OpeningHoursResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'day' => __('fr.'.$this->day),
+            'day' => __('days.'.$this->day),
             'opening_time' => substr($this->opening_time, 0, 5),
             'closing_time' => substr($this->closing_time, 0, 5),
         ];

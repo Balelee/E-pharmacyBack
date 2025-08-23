@@ -18,8 +18,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->foreignIdFor(Pharmacy::class)->nullable()->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->double('priceTotal');
+           $table->double('priceTotal');
             $table->enum('status', OrderStatus::values())->default(OrderStatus::default());
             $table->string('adresLivraison')->nullable();
             $table->decimal('lat', 10, 7)->nullable();
