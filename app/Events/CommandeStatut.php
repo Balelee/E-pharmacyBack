@@ -2,6 +2,9 @@
 
 namespace App\Events;
 
+use App\Http\Resources\OrderResource;
+use App\Models\Order;
+use App\Models\OrderPharmacy;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -42,5 +45,29 @@ class CommandeStatut implements ShouldBroadcastNow
     public function broadcastAs()
     {
         return 'commande.statut';
+    }
+
+    public function broadcastWith()
+    {
+        $orderPharmacy = OrderPharmacy::with('details')->find($this->orderId);
+
+        return [
+            "orderPharmacy" => [
+                "id" => $orderPharmacy->id,
+                "order_id" => $orderPharmacy->order_id,
+                "pharmacy_id" => $orderPharmacy->pharmacy_id,
+                "status" => $orderPharmacy->status,
+                "details" => $orderPharmacy->details->map(function ($detail) {
+                    return [
+                        "id" => $detail->id,
+                        "order_detail_id" => $detail->order_detail_id,
+                        "available" => $detail->available,
+                        "quantity" => $detail->quantity,
+                        "price" => $detail->price,
+                        "total" => $detail->total,
+                    ];
+                }),
+            ],
+        ];
     }
 }

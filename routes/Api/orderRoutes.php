@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderPharmacyController;
 
     Route::middleware('auth:sanctum')->group(function () {
     Route::get('/orders', [OrderController::class, 'getOrdersbyUser']);
@@ -12,6 +13,8 @@ use App\Http\Controllers\OrderController;
     Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus']);
     Route::get('/orders-valide', [OrderController::class, 'getOrderValide']);
     Route::get('/orders-annule', [OrderController::class, 'getOrderAnnule']);
+
+     Route::post('/orders/{orderId}/pharmacies/response', [OrderPharmacyController::class, 'storeResponse']);
     });
 
 
