@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Http\Resources\OrderPharmacyResource;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\OrderPharmacy;
@@ -18,26 +19,18 @@ class CommandeStatut implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $orderId;
-    public $status;
+    public $orderPharmacy;
 
-    /**
-     * Crée un nouvel événement.
-     */
-    public function __construct($orderId, $status)
+    public function __construct(OrderPharmacy $orderPharmacy)
     {
-        $this->orderId = $orderId;
-        $this->status = $status;
+        $this->orderPharmacy = $orderPharmacy;
     }
 
-    /**
-     * Canal de diffusion.
-     * Le client écoutera "private-client.{orderId}".
-     */
     public function broadcastOn()
     {
-        return new PrivateChannel('client.' . $this->orderId);
+        return new PrivateChannel('client.' . $this->orderPharmacy->order_id);
     }
+
 
     /**
      * Nom de l’événement côté front.
@@ -49,25 +42,8 @@ class CommandeStatut implements ShouldBroadcastNow
 
     public function broadcastWith()
     {
-        $orderPharmacy = OrderPharmacy::with('details')->find($this->orderId);
-
         return [
-            "orderPharmacy" => [
-                "id" => $orderPharmacy->id,
-                "order_id" => $orderPharmacy->order_id,
-                "pharmacy_id" => $orderPharmacy->pharmacy_id,
-                "status" => $orderPharmacy->status,
-                "details" => $orderPharmacy->details->map(function ($detail) {
-                    return [
-                        "id" => $detail->id,
-                        "order_detail_id" => $detail->order_detail_id,
-                        "available" => $detail->available,
-                        "quantity" => $detail->quantity,
-                        "price" => $detail->price,
-                        "total" => $detail->total,
-                    ];
-                }),
-            ],
+            'orderPharmacy' => new OrderPharmacyResource($this->orderPharmacy)
         ];
     }
 }

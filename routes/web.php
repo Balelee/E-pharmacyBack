@@ -1,7 +1,11 @@
 <?php
 
+use App\Events\CommandeStatut;
 use App\Events\MessageSent;
+use App\Http\Resources\OrderPharmacyResource;
+use App\Models\OrderPharmacy;
 use Illuminate\Support\Facades\Route;
+use PhpParser\Node\Expr\New_;
 use Symfony\Component\Mailer\Event\SentMessageEvent;
 
 /*
@@ -19,7 +23,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test-event', function () {
-    broadcast(new MessageSent("Hello tout le monde depuis laravel"));
-    return "Evénement envoyé";
+Route::get('/test-order/{orderId}', function ($orderId) {
+    $event = new CommandeStatut($orderId);
+
+    return response()->json($event->broadcastWith());
 });
+

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CommandeStatut;
 use App\Models\Enums\OrderPharmacyStatus;
 use App\Models\OrderPharmacy;
 use App\Models\OrderPharmacyDetail;
@@ -62,7 +63,6 @@ class OrderPharmacyController extends Controller
             }
 
             DB::commit();
-
             return response()->json([
                 'message' => 'Réponse enregistrée avec succès'
             ]);

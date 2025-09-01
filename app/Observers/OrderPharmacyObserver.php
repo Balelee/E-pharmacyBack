@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Events\CommandeStatut;
 use App\Models\OrderPharmacy;
+use Illuminate\Support\Facades\DB;
 
 class OrderPharmacyObserver
 {
@@ -12,7 +13,11 @@ class OrderPharmacyObserver
      */
     public function created(OrderPharmacy $orderPharmacy): void
     {
-        event(new CommandeStatut($orderPharmacy->order_id, $orderPharmacy->status));
+
+        DB::afterCommit(function () use ($orderPharmacy) {
+            $orderPharmacy->load('orderpharmacydetails');
+            event(new CommandeStatut($orderPharmacy));
+        });
     }
 
     /**
@@ -20,7 +25,10 @@ class OrderPharmacyObserver
      */
     public function updated(OrderPharmacy $orderPharmacy): void
     {
-        event(new CommandeStatut($orderPharmacy->order_id, $orderPharmacy->status));
+        DB::afterCommit(function () use ($orderPharmacy) {
+            $orderPharmacy->load('orderpharmacydetails');
+            event(new CommandeStatut($orderPharmacy));
+        });
     }
 
     /**
