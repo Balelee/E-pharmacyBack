@@ -17,7 +17,7 @@ class OrderPharmacyResource extends JsonResource
         return [
             "id" => $this->id,
             "order_id" => $this->order_id,
-            "pharmacy_id" => $this->pharmacy_id,
+            "pharmacy" => new PharmacyResource($this->whenLoaded('pharmacy')),
             "status" => $this->status,
             "details" => OrderPharmacyDetailResource::collection($this->whenLoaded('orderpharmacydetails')),
         ];

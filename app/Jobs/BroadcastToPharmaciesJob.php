@@ -3,8 +3,10 @@
 namespace App\Jobs;
 
 use App\Events\ProduitDemande;
+use App\Models\Enums\OrderPharmacyStatus;
 use App\Models\Enums\OrderStatus;
 use App\Models\Order;
+use App\Models\OrderPharmacy;
 use App\Models\Pharmacy;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -39,18 +41,21 @@ class BroadcastToPharmaciesJob implements ShouldQueue
         // Liste déjà notifiée
         $alreadyNotified = $order->notified_pharmacies ?? [];
         $newlyNotified = [];
+
+          // Vérifier si au moins 4 pharmacies ont traité la commande
+        $pharmaciesAcceptedCount = OrderPharmacy::where('order_id', $this->orderId)
+            ->where('status', OrderPharmacyStatus::ACCEPTED)
+            ->count();
+
+        if ($pharmaciesAcceptedCount >= 2) {
+            $order->update(['status' => OrderStatus::TRAITE->value]);
+            \Log::info("Propagation arrêtée : déjà {$pharmaciesAcceptedCount} pharmacies ont traité la commande {$this->orderId}");
+            return;
+        }
         // Chercher pharmacies dans le rayon
         $pharmacies = Pharmacy::nearby($order->lat, $order->lng, $this->radius)
             ->whereNotIn('id', $alreadyNotified)->get();
 
-        \Log::info("BroadcastToPharmaciesJob exécuté pour la commande {$this->orderId} avec radius {$this->radius} et elapsed {$this->elapsedMinutes} minutes");
-        $liste = collect($pharmacies)
-            ->map(function ($p, $index) {
-                return ($index + 1) . ' -> ' . $p->name;
-            })
-            ->implode(",\n"); // retour à la ligne
-
-        \Log::info("Pharmacies trouvées par le job :\n" . $liste);
 
         foreach ($pharmacies as $p) {
             if ($p->pharmacien_id != null && !in_array($p->id, $alreadyNotified)) {
@@ -71,7 +76,7 @@ class BroadcastToPharmaciesJob implements ShouldQueue
         if ($order->status !== OrderStatus::ENATTENTE) {
             return;
         }
-
+      
         // Timeout global
         if ($this->elapsedMinutes >= 10) {
             $order->update(['status' => OrderStatus::EXPIRE->value]);
@@ -80,7 +85,7 @@ class BroadcastToPharmaciesJob implements ShouldQueue
         }
         // Planifier l’étape suivante dans 3 minutes avec un rayon élargi
         $nextRadius = $this->radius + 2;
-        dispatch(new BroadcastToPharmaciesJob($this->orderId, $nextRadius, $this->elapsedMinutes + 3))
-            ->delay(now()->addMinutes(3));
+        dispatch(new BroadcastToPharmaciesJob($this->orderId, $nextRadius, $this->elapsedMinutes + 1))
+            ->delay(now()->addMinutes(1));
     }
 }

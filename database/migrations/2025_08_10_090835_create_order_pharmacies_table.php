@@ -18,7 +18,8 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Order::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignIdFor(Pharmacy::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->enum('status', OrderPharmacyStatus::values())->default(OrderPharmacyStatus::default());
+             $table->unique(['order_id', 'pharmacy_id']);
+            $table->enum('status', OrderPharmacyStatus::values());
             $table->timestamps();
         });
     }

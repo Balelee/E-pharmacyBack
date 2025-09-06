@@ -9,10 +9,9 @@ enum OrderPharmacyStatus: string implements AdvancedEnumInterface
 {
     use AdvancedEnum;
 
-    case PENDING = 'pending';
+
     case ACCEPTED = 'accepted';
     case REFUSED = 'refused';
-    case TIMEOUT = 'timeout';
 
     public function label(): string
     {
@@ -21,6 +20,6 @@ enum OrderPharmacyStatus: string implements AdvancedEnumInterface
 
     public static function default(): string
     {
-        return self::PENDING->value;
+        return self::ACCEPTED->value;
     }
 }

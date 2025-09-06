@@ -22,6 +22,7 @@ class OrderResource extends JsonResource
             'priceTotal' => $this->priceTotal,
             'statusLabel' => $this->status?->label(),
             'statusColor' => $this->status->color(),
+            'date' => $this->created_at->diffForHumans(),
             'details' => OrderDetailResource::collection($this->details),
         ];
     }

@@ -35,6 +35,10 @@ class OrderDetail extends BaseModel
         return $this->belongsTo(Order::class, 'order_id');
     }
 
+    public function pharmacyDetails()
+    {
+        return $this->hasMany(OrderPharmacyDetail::class, 'order_detail_id');
+    }
     public function getSubTotalAttribute()
     {
         return $this->priceUnitaire * $this->quantity;
@@ -47,6 +51,6 @@ class OrderDetail extends BaseModel
 
     public function getPathUrlAttribute()
     {
-        return asset('storage/'.$this->product->image);
+        return asset('storage/' . $this->product->image);
     }
 }

@@ -14,15 +14,7 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends BaseController
 {
-    public function getAvailableOrders()
-    {
-        $orders = Order::with('details')
-            ->where('status', OrderStatus::ENATTENTE)
-            ->orderBy('id', 'desc')
-            ->get();
 
-        return OrderResource::collection($orders);
-    }
 
     public function getOrdersbyUser()
     {
@@ -67,10 +59,9 @@ class OrderController extends BaseController
         }
 
         // ➤ Sélectionner les pharmacies à 2 km
-        $pharmacies = Pharmacy::nearby($order->lat, $order->lng, 2)->get();     
+        $pharmacies = Pharmacy::nearby($order->lat, $order->lng, 2)->get();
         $newlyNotified = [];
         // ➤ Broadcast vers chaque pharmacie trouvée
-
         foreach ($pharmacies as $p) {
             if ($p->pharmacien_id != null) {
                 broadcast(new ProduitDemande($order->id, $order->details, 2, $p->id))
@@ -84,12 +75,9 @@ class OrderController extends BaseController
                 'notified_pharmacies' => $newlyNotified,
             ]);
         }
-
-
-
         // Dispatch du job différé qui lancera la prochaine phase (3 min plus tard),  Lancer le premier broadcast (2 km, elapsed = 0)
         dispatch(new BroadcastToPharmaciesJob($order->id, 2, 0))
-            ->delay(now()->addMinutes(3));
+            ->delay(now()->addMinutes(1));
 
         return response()->json([
             'message' => 'Commande créée et envoyée aux pharmacies proches.',
@@ -109,31 +97,4 @@ class OrderController extends BaseController
         return new OrderResource($order);
     }
 
-    // Action pour le pharmacien de valider ou annuler une commandé
-
-    public function updateStatus(Request $request, Order $order)
-    {
-        $request->validate([
-            'status' => 'required|in:traite,annule',
-        ]);
-
-        $order->status = $request->status;
-        $order->save();
-
-        return new OrderResource($order);
-    }
-
-    public function getOrderValide()
-    {
-        $orders = Order::where('status', OrderStatus::TRAITE)->get();
-
-        return OrderResource::collection($orders);
-    }
-
-    public function getOrderAnnule()
-    {
-        $orders = Order::where('status', OrderStatus::ANNULER)->get();
-
-        return OrderResource::collection($orders);
-    }
 }

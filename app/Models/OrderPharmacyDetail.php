@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OrderPharmacyDetail extends BaseModel
 {
     use HasFactory;
 
-     protected $fillable = [
+    protected $fillable = [
         'order_pharmacy_id',
         'order_detail_id',
         'available',
@@ -24,13 +24,13 @@ class OrderPharmacyDetail extends BaseModel
         'total' => 'double',
     ];
 
-    public function orderPharmacy()
+    public function orderPharmacy(): BelongsTo
     {
         return $this->belongsTo(OrderPharmacy::class);
     }
 
-    public function orderDetail()
+    public function orderDetail(): BelongsTo
     {
-        return $this->belongsTo(OrderDetail::class);
+        return $this->belongsTo(OrderDetail::class, 'order_detail_id');
     }
 }
