@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Events\CommandeStatut;
+use App\Http\Resources\OrderResource;
 use App\Models\Enums\OrderPharmacyStatus;
+use App\Models\Enums\OrderStatus;
+use App\Models\Order;
 use App\Models\OrderPharmacy;
 use App\Models\OrderPharmacyDetail;
 use Illuminate\Http\Request;
@@ -11,6 +14,28 @@ use Illuminate\Support\Facades\DB;
 
 class OrderPharmacyController extends Controller
 {
+    public function getPharmacienOrders(Request $request)
+    {
+        $pharmacyId = auth()->user()->pharmacie?->id;
+
+        if (!$pharmacyId) {
+            return response()->json([
+                'message' => 'Pharmacien non lié à une pharmacie'
+            ], 403);
+        }
+
+        $query = Order::with('details')
+            ->whereJsonContains('notified_pharmacies', $pharmacyId)
+            ->orderBy('id', 'desc');
+        if ($request->has('status') && $request->status !== 'Tous') {
+            $query->where('status', $request->status);
+        }
+
+        $orders = $query->get();
+
+        return OrderResource::collection($orders);
+    }
+
 
     public function storeResponse(Request $request, $orderId)
     {
@@ -61,7 +86,6 @@ class OrderPharmacyController extends Controller
                     ]
                 );
             }
-
             DB::commit();
             return response()->json([
                 'message' => 'Réponse enregistrée avec succès'

@@ -15,7 +15,10 @@ class OrderPharmacyObserver
     {
 
         DB::afterCommit(function () use ($orderPharmacy) {
-            $orderPharmacy->load('orderpharmacydetails');
+            $orderPharmacy->load([
+                'orderpharmacydetails.orderDetail',
+                'pharmacy'
+            ]);
             event(new CommandeStatut($orderPharmacy));
         });
     }
