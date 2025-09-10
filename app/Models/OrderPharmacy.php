@@ -23,6 +23,10 @@ class OrderPharmacy extends BaseModel
         'status' => OrderPharmacyStatus::class
     ];
 
+    protected $appends = [
+        'treated_count',
+    ];
+
     public function orderpharmacydetails(): HasMany
     {
         return $this->hasMany(OrderPharmacyDetail::class, 'order_pharmacy_id');
@@ -37,5 +41,10 @@ class OrderPharmacy extends BaseModel
     public function pharmacy(): BelongsTo
     {
         return $this->belongsTo(Pharmacy::class);
+    }
+    
+    public function getTreatedCountAttribute(): int
+    {
+        return self::where('order_id', $this->order_id)->count();
     }
 }
