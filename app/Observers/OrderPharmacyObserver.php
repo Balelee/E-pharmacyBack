@@ -19,6 +19,14 @@ class OrderPharmacyObserver
                 'orderpharmacydetails.orderDetail',
                 'pharmacy'
             ]);
+
+            if (
+                $orderPharmacy->orderpharmacydetails->count() === 1 &&
+                !$orderPharmacy->orderpharmacydetails->first()->available
+            ) {
+                return;
+            }
+
             event(new CommandeStatut($orderPharmacy));
         });
     }
@@ -26,13 +34,7 @@ class OrderPharmacyObserver
     /**
      * Handle the OrderPharmacy "updated" event.
      */
-    public function updated(OrderPharmacy $orderPharmacy): void
-    {
-        DB::afterCommit(function () use ($orderPharmacy) {
-            $orderPharmacy->load('orderpharmacydetails');
-            event(new CommandeStatut($orderPharmacy));
-        });
-    }
+    public function updated(OrderPharmacy $orderPharmacy): void {}
 
     /**
      * Handle the OrderPharmacy "deleted" event.
