@@ -3,17 +3,40 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
+use App\Models\Pharmacy;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function getUsers() // Function de recuperation des users
+    // get all users for admin
+    public function getUsers()
     {
-        $users = User::all();
-
+        $users = User::with('pharmacie')->get();
         return UserResource::collection($users);
+    }
+
+    public function updateUserByAdmin(Request $request, User $user)
+    {
+        // Validation
+        $request->validate([
+            'type' => ['required', 'in:admin,pharmacien,client'],
+            'status' => ['required', 'in:actif,inactif'],
+            'pharmacy_id' => ['nullable', 'exists:pharmacies,id'],
+        ]);
+
+        // Mise à jour des infos
+        $user->update([
+            'type' => $request->type,
+            'status' => $request->status,
+        ]);
+
+        // Attribution de la pharmacie si fourni
+        $pharmacy = Pharmacy::find($request->pharmacy_id);
+        $pharmacy->update(['pharmacien_id' => $user->id]);
+
+        return new UserResource($user->load('pharmacie'));
     }
 
     public function loginUser(Request $request) // CONNEXION DU USER
@@ -41,7 +64,6 @@ class UserController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return new UserResource($request);
-
     }
 
     public function storeUser(Request $request)

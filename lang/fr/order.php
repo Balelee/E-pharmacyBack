@@ -6,3 +6,4 @@ return [
     'status.annule' => 'Annulé',
     'status.expire' => 'Expiré',
 ];
+

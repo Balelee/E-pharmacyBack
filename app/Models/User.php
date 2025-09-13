@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\Enums\ModelStatus;
 use App\Models\Enums\UserType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,6 +37,7 @@ class User extends Authenticatable
         'email',
         'password',
         'type',
+        'status',
         'otp_expires_at',
         'otp_verified_at',
 
@@ -58,6 +61,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'birthDate' => 'date',
         'type' => UserType::class,
+        'status' => ModelStatus::class,
         'password' => 'hashed',
     ];
 
@@ -74,7 +78,6 @@ class User extends Authenticatable
     public function pharmacie()
     {
         return $this->hasOne(Pharmacy::class, 'pharmacien_id');
-
     }
 
     public function getPharmacieNameAttribute()

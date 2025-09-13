@@ -24,8 +24,10 @@ class UserResource extends JsonResource
             'birthPlace' => $this->birthPlace,
             'email' => $this->email,
             'type' => $this->type,
-            'userTypeLabel' => $this->userType ? $this->userType->label() : null,
-            'pharmacie' => New PharmacyResource($this->pharmacie),
+            'userTypeLabel' => $this->type ? $this->type->label() : null,
+            'status' => $this->status,
+            'status_label' => $this->status?$this->status->label():null,
+            'pharmacie' => New PharmacyResource($this->whenLoaded('pharmacie')),
             'token' => $this->token,
 
         ];
