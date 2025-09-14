@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
-use App\Models\Pharmacy;
 use App\Models\User;
+use App\Models\Pharmacy;
 use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -59,12 +59,14 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-    public function logoutUser(Request $request) // DECONNEXION DU USER
-    {
-        $request->user()->currentAccessToken()->delete();
+    public function logoutUser(Request $request)
+{
+    $user = $request->user();
+    $user->currentAccessToken()->delete();
 
-        return new UserResource($request);
-    }
+    return new UserResource($user);
+}
+
 
     public function storeUser(Request $request)
     {
