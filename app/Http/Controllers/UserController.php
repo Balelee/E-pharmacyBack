@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Pharmacy;
-use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
+use App\Models\Pharmacy;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -13,7 +13,8 @@ class UserController extends Controller
     // get all users for admin
     public function getUsers()
     {
-        $users = User::with('pharmacie')->get();
+        $users = User::notAdmin()->get();
+
         return UserResource::collection($users);
     }
 
@@ -32,9 +33,21 @@ class UserController extends Controller
             'status' => $request->status,
         ]);
 
-        // Attribution de la pharmacie si fourni
-        $pharmacy = Pharmacy::find($request->pharmacy_id);
-        $pharmacy->update(['pharmacien_id' => $user->id]);
+        if (is_null($request->pharmacy_id)) {
+
+            Pharmacy::where('pharmacien_id', $user->id)
+                ->update(['pharmacien_id' => null]);
+        } else {
+            $pharmacy = Pharmacy::find($request->pharmacy_id);
+
+            if ($pharmacy) {
+
+                Pharmacy::where('pharmacien_id', $user->id)
+                    ->where('id', '!=', $pharmacy->id)
+                    ->update(['pharmacien_id' => null]);
+                $pharmacy->update(['pharmacien_id' => $user->id]);
+            }
+        }
 
         return new UserResource($user->load('pharmacie'));
     }
@@ -60,13 +73,12 @@ class UserController extends Controller
     }
 
     public function logoutUser(Request $request)
-{
-    $user = $request->user();
-    $user->currentAccessToken()->delete();
+    {
+        $user = $request->user();
+        $user->currentAccessToken()->delete();
 
-    return new UserResource($user);
-}
-
+        return new UserResource($user);
+    }
 
     public function storeUser(Request $request)
     {

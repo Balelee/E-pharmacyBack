@@ -26,8 +26,8 @@ class UserResource extends JsonResource
             'type' => $this->type,
             'userTypeLabel' => $this->type ? $this->type->label() : null,
             'status' => $this->status,
-            'status_label' => $this->status?$this->status->label():null,
-            'pharmacie' => New PharmacyResource($this->whenLoaded('pharmacie')),
+            'status_label' => $this->status ? $this->status->label() : null,
+            'pharmacie' => new PharmacyResource($this->whenLoaded('pharmacie')),
             'token' => $this->token,
 
         ];

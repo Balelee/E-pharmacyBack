@@ -11,7 +11,7 @@ enum UserType: string implements AdvancedEnumInterface
 
     public function label(): string
     {
-        return __('user.type.' . $this->value);
+        return __('user.type.'.$this->value);
     }
 
     public static function default(): string

@@ -4,8 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\App;
+use Symfony\Component\HttpFoundation\Response;
 
 class AcceptUserLang
 {
@@ -16,7 +16,7 @@ class AcceptUserLang
      */
     public function handle(Request $request, Closure $next): Response
     {
-       $userLocale = $request->header('Accept-Language');
+        $userLocale = $request->header('Accept-Language');
 
         $locale = in_array(strtolower($userLocale), ['en', 'fr']) ? $userLocale : 'fr';
 

@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Models\Enums\ModelStatus;
 use App\Models\Enums\UserType;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -78,6 +79,11 @@ class User extends Authenticatable
     public function pharmacie()
     {
         return $this->hasOne(Pharmacy::class, 'pharmacien_id');
+    }
+
+    public function scopeNotAdmin(Builder $query): Builder
+    {
+        return $query->whereNot('type', UserType::ADMIN)->with('pharmacie');
     }
 
     public function getPharmacieNameAttribute()

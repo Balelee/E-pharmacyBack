@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('email')->unique()->nullable();
             $table->string('password')->nullable();
             $table->enum('type', UserType::values())->default(UserType::default());
-            $table->enum('status',ModelStatus::values())->default(ModelStatus::INACTIF->value);
+            $table->enum('status', ModelStatus::values())->default(ModelStatus::INACTIF->value);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -30,23 +30,22 @@ class Pharmacy extends BaseModel
     }
 
     public function scopeNearby($query, $lat, $lng, $radiusKm = 2)
-{
-    return $query->selectRaw("
+    {
+        return $query->selectRaw('
             id, pharmacien_id, name, lat, lng,
             (6371 * acos(
                 cos(radians(?)) * cos(radians(lat)) *
                 cos(radians(lng) - radians(?)) +
                 sin(radians(?)) * sin(radians(lat))
             )) AS distance
-        ", [
+        ', [
             $lat,
             $lng,
-            $lat
+            $lat,
         ])
-        ->having('distance', '<=', $radiusKm)
-        ->orderBy('distance', 'asc');
-}
-
+            ->having('distance', '<=', $radiusKm)
+            ->orderBy('distance', 'asc');
+    }
 
     public static function validationRules(): array
     {
@@ -86,21 +85,19 @@ class Pharmacy extends BaseModel
         );
     }
 
-
     public function orderPharmacies()
-{
-    return $this->hasMany(OrderPharmacy::class);
-}
+    {
+        return $this->hasMany(OrderPharmacy::class);
+    }
 
-
-/*
-De récupérer toutes les commandes associées à une pharmacie.
-De récupérer aussi les infos spécifiques à la relation (comme le status)
-*/
-public function orders()
-{
-    return $this->belongsToMany(Order::class, 'order_pharmacy')
-                ->withPivot('status')
-                ->withTimestamps();
-}
+    /*
+    De récupérer toutes les commandes associées à une pharmacie.
+    De récupérer aussi les infos spécifiques à la relation (comme le status)
+    */
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_pharmacy')
+            ->withPivot('status')
+            ->withTimestamps();
+    }
 }
