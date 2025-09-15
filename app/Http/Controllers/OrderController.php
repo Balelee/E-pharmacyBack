@@ -5,17 +5,13 @@ namespace App\Http\Controllers;
 use App\Events\ProduitDemande;
 use App\Http\Resources\OrderResource;
 use App\Jobs\BroadcastToPharmaciesJob;
-use App\Models\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Pharmacy;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class OrderController extends BaseController
 {
-
-
     public function getOrdersbyUser()
     {
         $user = auth()->user();
@@ -70,7 +66,7 @@ class OrderController extends BaseController
             }
         }
 
-        if (!empty($newlyNotified)) {
+        if (! empty($newlyNotified)) {
             $order->update([
                 'notified_pharmacies' => $newlyNotified,
             ]);
@@ -96,5 +92,4 @@ class OrderController extends BaseController
 
         return new OrderResource($order);
     }
-
 }

@@ -4,7 +4,6 @@ namespace App\Events;
 
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
@@ -34,16 +33,18 @@ class ProduitDemande implements ShouldBroadcastNow
     public function broadcastOn()
     {
         // return new PrivateChannel('pharmacies');
-        return new PrivateChannel('pharmacy.' . $this->pharmacyId);
+        return new PrivateChannel('pharmacy.'.$this->pharmacyId);
     }
 
     public function broadcastAs()
     {
         return 'produit.demande';
     }
+
     public function broadcastWith()
     {
         $order = Order::findOrFail($this->orderId);
-        return ["order" => new OrderResource($order)];
+
+        return ['order' => new OrderResource($order)];
     }
 }

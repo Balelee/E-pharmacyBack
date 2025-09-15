@@ -17,12 +17,12 @@ class OrderPharmacyObserver
         DB::afterCommit(function () use ($orderPharmacy) {
             $orderPharmacy->load([
                 'orderpharmacydetails.orderDetail',
-                'pharmacy'
+                'pharmacy',
             ]);
 
             if (
                 $orderPharmacy->orderpharmacydetails->count() === 1 &&
-                !$orderPharmacy->orderpharmacydetails->first()->available
+                ! $orderPharmacy->orderpharmacydetails->first()->available
             ) {
                 return;
             }

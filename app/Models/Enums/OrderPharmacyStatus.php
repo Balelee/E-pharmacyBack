@@ -2,13 +2,9 @@
 
 namespace App\Models\Enums;
 
-use App\Models\Enums\AdvancedEnum;
-use App\Models\Enums\AdvancedEnumInterface;
-
 enum OrderPharmacyStatus: string implements AdvancedEnumInterface
 {
     use AdvancedEnum;
-
 
     case ACCEPTED = 'accepted';
     case REFUSED = 'refused';

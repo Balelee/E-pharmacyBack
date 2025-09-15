@@ -1,11 +1,11 @@
 <?php
 
+use App\Models\Enums\OrderPharmacyStatus;
 use App\Models\Order;
 use App\Models\Pharmacy;
-use Illuminate\Support\Facades\Schema;
-use App\Models\Enums\OrderPharmacyStatus;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Order::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignIdFor(Pharmacy::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-             $table->unique(['order_id', 'pharmacy_id']);
+            $table->unique(['order_id', 'pharmacy_id']);
             $table->enum('status', OrderPharmacyStatus::values());
             $table->timestamps();
         });

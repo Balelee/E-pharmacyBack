@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\CommandeStatut;
 use App\Http\Resources\OrderResource;
 use App\Models\Enums\OrderPharmacyStatus;
-use App\Models\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\OrderPharmacy;
 use App\Models\OrderPharmacyDetail;
@@ -18,9 +16,9 @@ class OrderPharmacyController extends Controller
     {
         $pharmacyId = auth()->user()->pharmacie?->id;
 
-        if (!$pharmacyId) {
+        if (! $pharmacyId) {
             return response()->json([
-                'message' => 'Pharmacien non lié à une pharmacie'
+                'message' => 'Pharmacien non lié à une pharmacie',
             ], 403);
         }
 
@@ -35,7 +33,6 @@ class OrderPharmacyController extends Controller
 
         return OrderResource::collection($orders);
     }
-
 
     public function storeResponse(Request $request, $orderId)
     {
@@ -58,13 +55,13 @@ class OrderPharmacyController extends Controller
 
             if ($orderPharmacy && $orderPharmacy->status === OrderPharmacyStatus::ACCEPTED) {
                 return response()->json([
-                    'message' => 'Cette commande a déjà été traitée par votre pharmacie.'
+                    'message' => 'Cette commande a déjà été traitée par votre pharmacie.',
                 ], 403);
             }
 
             $orderPharmacy = OrderPharmacy::firstOrCreate(
                 [
-                    'order_id'    => $orderId,
+                    'order_id' => $orderId,
                     'pharmacy_id' => $pharmacyId,
                 ],
                 [
@@ -76,26 +73,27 @@ class OrderPharmacyController extends Controller
                 OrderPharmacyDetail::updateOrCreate(
                     [
                         'order_pharmacy_id' => $orderPharmacy->id,
-                        'order_detail_id'   => $item['id'],
+                        'order_detail_id' => $item['id'],
                     ],
                     [
                         'available' => $item['available'],
-                        'quantity'  => $item['quantity'],
-                        'price'     => $item['price'],
-                        'total'     => $item['total'],
+                        'quantity' => $item['quantity'],
+                        'price' => $item['price'],
+                        'total' => $item['total'],
                     ]
                 );
             }
             DB::commit();
+
             return response()->json([
-                'message' => 'Réponse enregistrée avec succès'
+                'message' => 'Réponse enregistrée avec succès',
             ]);
         } catch (\Throwable $e) {
             DB::rollBack();
 
             return response()->json([
                 'message' => 'Erreur lors de l’enregistrement',
-                'error'   => $e->getMessage(),
+                'error' => $e->getMessage(),
             ], 500);
         }
     }

@@ -15,12 +15,12 @@ class OrderPharmacyResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this->id,
-            "order_id" => $this->order_id,
-            "treated_count" => $this->treated_count,
-            "pharmacy" => new PharmacyResource($this->whenLoaded('pharmacy')),
-            "status" => $this->status,
-            "details" => OrderPharmacyDetailResource::collection($this->whenLoaded('orderpharmacydetails')),
+            'id' => $this->id,
+            'order_id' => $this->order_id,
+            'treated_count' => $this->treated_count,
+            'pharmacy' => new PharmacyResource($this->whenLoaded('pharmacy')),
+            'status' => $this->status,
+            'details' => OrderPharmacyDetailResource::collection($this->whenLoaded('orderpharmacydetails')),
         ];
     }
 }

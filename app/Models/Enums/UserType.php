@@ -5,7 +5,7 @@ namespace App\Models\Enums;
 enum UserType: string implements AdvancedEnumInterface
 {
     use AdvancedEnum;
-
+    case ADMIN = 'admin';
     case CLIENT = 'client';
     case PHARMACIEN = 'pharmacien';
 

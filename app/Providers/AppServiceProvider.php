@@ -21,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-         OrderPharmacy::observe(OrderPharmacyObserver::class);
+        OrderPharmacy::observe(OrderPharmacyObserver::class);
     }
 }

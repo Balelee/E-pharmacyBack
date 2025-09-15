@@ -2,7 +2,6 @@
 
 use App\Models\Enums\OrderStatus;
 use App\Models\Enums\PayementType;
-use App\Models\Pharmacy;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,7 +17,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-           $table->double('priceTotal');
+            $table->double('priceTotal');
             $table->enum('status', OrderStatus::values())->default(OrderStatus::default());
             $table->string('adresLivraison')->nullable();
             $table->decimal('lat', 10, 7)->nullable();

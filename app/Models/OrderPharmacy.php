@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Order;
-use App\Models\Pharmacy;
 use App\Models\Enums\OrderPharmacyStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,11 +14,11 @@ class OrderPharmacy extends BaseModel
     protected $fillable = [
         'order_id',
         'pharmacy_id',
-        'status'
+        'status',
     ];
 
     protected $casts = [
-        'status' => OrderPharmacyStatus::class
+        'status' => OrderPharmacyStatus::class,
     ];
 
     protected $appends = [
@@ -42,7 +40,7 @@ class OrderPharmacy extends BaseModel
     {
         return $this->belongsTo(Pharmacy::class);
     }
-    
+
     public function getTreatedCountAttribute(): int
     {
         return self::where('order_id', $this->order_id)->count();

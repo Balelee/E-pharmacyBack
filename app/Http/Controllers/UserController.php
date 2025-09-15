@@ -3,17 +3,53 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
+use App\Models\Pharmacy;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function getUsers() // Function de recuperation des users
+    // get all users for admin
+    public function getUsers()
     {
-        $users = User::all();
+        $users = User::notAdmin()->get();
 
         return UserResource::collection($users);
+    }
+
+    public function updateUserByAdmin(Request $request, User $user)
+    {
+        // Validation
+        $request->validate([
+            'type' => ['required', 'in:admin,pharmacien,client'],
+            'status' => ['required', 'in:actif,inactif'],
+            'pharmacy_id' => ['nullable', 'exists:pharmacies,id'],
+        ]);
+
+        // Mise à jour des infos
+        $user->update([
+            'type' => $request->type,
+            'status' => $request->status,
+        ]);
+
+        if (is_null($request->pharmacy_id)) {
+
+            Pharmacy::where('pharmacien_id', $user->id)
+                ->update(['pharmacien_id' => null]);
+        } else {
+            $pharmacy = Pharmacy::find($request->pharmacy_id);
+
+            if ($pharmacy) {
+
+                Pharmacy::where('pharmacien_id', $user->id)
+                    ->where('id', '!=', $pharmacy->id)
+                    ->update(['pharmacien_id' => null]);
+                $pharmacy->update(['pharmacien_id' => $user->id]);
+            }
+        }
+
+        return new UserResource($user->load('pharmacie'));
     }
 
     public function loginUser(Request $request) // CONNEXION DU USER
@@ -36,12 +72,12 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-    public function logoutUser(Request $request) // DECONNEXION DU USER
+    public function logoutUser(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        $user = $request->user();
+        $user->currentAccessToken()->delete();
 
-        return new UserResource($request);
-
+        return new UserResource($user);
     }
 
     public function storeUser(Request $request)

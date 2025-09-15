@@ -15,7 +15,7 @@ enum OrderStatus: string implements AdvancedEnumInterface
 
     public function label(): string
     {
-        return __('order.status.' . $this->value);
+        return __('order.status.'.$this->value);
     }
 
     public static function default(): string

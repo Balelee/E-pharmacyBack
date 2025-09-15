@@ -13,7 +13,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\DB;
 
 class BroadcastToPharmaciesJob implements ShouldQueue
 {
@@ -42,7 +41,7 @@ class BroadcastToPharmaciesJob implements ShouldQueue
         $alreadyNotified = $order->notified_pharmacies ?? [];
         $newlyNotified = [];
 
-          // Vérifier si au moins 4 pharmacies ont traité la commande
+        // Vérifier si au moins 4 pharmacies ont traité la commande
         $pharmaciesAcceptedCount = OrderPharmacy::where('order_id', $this->orderId)
             ->where('status', OrderPharmacyStatus::ACCEPTED)
             ->count();
@@ -50,24 +49,24 @@ class BroadcastToPharmaciesJob implements ShouldQueue
         if ($pharmaciesAcceptedCount >= 2) {
             $order->update(['status' => OrderStatus::TRAITE->value]);
             \Log::info("Propagation arrêtée : déjà {$pharmaciesAcceptedCount} pharmacies ont traité la commande {$this->orderId}");
+
             return;
         }
         // Chercher pharmacies dans le rayon
         $pharmacies = Pharmacy::nearby($order->lat, $order->lng, $this->radius)
             ->whereNotIn('id', $alreadyNotified)->get();
 
-
         foreach ($pharmacies as $p) {
-            if ($p->pharmacien_id != null && !in_array($p->id, $alreadyNotified)) {
+            if ($p->pharmacien_id != null && ! in_array($p->id, $alreadyNotified)) {
                 broadcast(new ProduitDemande($order->id, $order->details, $this->radius, $p->id))
                     ->toOthers();
                 $newlyNotified[] = $p->id;
             }
         }
 
-        if (!empty($newlyNotified)) {
+        if (! empty($newlyNotified)) {
             $order->update([
-                'notified_pharmacies' => array_merge($alreadyNotified, $newlyNotified)
+                'notified_pharmacies' => array_merge($alreadyNotified, $newlyNotified),
             ]);
         }
 
@@ -76,7 +75,7 @@ class BroadcastToPharmaciesJob implements ShouldQueue
         if ($order->status !== OrderStatus::ENATTENTE) {
             return;
         }
-      
+
         // Timeout global
         if ($this->elapsedMinutes >= 10) {
             $order->update(['status' => OrderStatus::EXPIRE->value]);

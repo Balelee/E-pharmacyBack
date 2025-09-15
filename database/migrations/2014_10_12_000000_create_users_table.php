@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Enums\ModelStatus;
 use App\Models\Enums\UserType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -23,7 +24,8 @@ return new class extends Migration
             $table->string('birthPlace')->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('password')->nullable();
-            $table->enum('type', UserType::values())->default(UserType::default())->nullable();
+            $table->enum('type', UserType::values())->default(UserType::default());
+            $table->enum('status', ModelStatus::values())->default(ModelStatus::INACTIF->value);
             $table->rememberToken();
             $table->timestamps();
         });

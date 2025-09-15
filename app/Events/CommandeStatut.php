@@ -3,14 +3,9 @@
 namespace App\Events;
 
 use App\Http\Resources\OrderPharmacyResource;
-use App\Http\Resources\OrderResource;
-use App\Models\Order;
 use App\Models\OrderPharmacy;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -28,9 +23,8 @@ class CommandeStatut implements ShouldBroadcastNow
 
     public function broadcastOn()
     {
-        return new PrivateChannel('client.' . $this->orderPharmacy->order_id);
+        return new PrivateChannel('client.'.$this->orderPharmacy->order_id);
     }
-
 
     /**
      * Nom de l’événement côté front.
@@ -43,7 +37,7 @@ class CommandeStatut implements ShouldBroadcastNow
     public function broadcastWith()
     {
         return [
-            'orderPharmacy' => new OrderPharmacyResource($this->orderPharmacy)
+            'orderPharmacy' => new OrderPharmacyResource($this->orderPharmacy),
         ];
     }
 }
