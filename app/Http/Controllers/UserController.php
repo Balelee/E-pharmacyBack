@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
+use App\Models\Enums\ModelStatus;
 use App\Models\Pharmacy;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -59,10 +61,16 @@ class UserController extends Controller
             'email' => ['required_without:phone', 'string'],
             'password' => ['required', 'string', 'min:8'],
         ]);
-        $user = User::where('email', $request->email)->orWhere('phone', $request->email)->first();
+        $user = User::with('pharmacie')->where('email', $request->email)->orWhere('phone', $request->email)->first();
         if (! $user || ! Hash::check($request->password, $user->password)) {
             return response([
-                'message' => ['These credentials do not match our records.'],
+                'message' => 'Les informations saisies sont invalides.',
+            ], 404);
+        }
+
+        if ($user->status == ModelStatus::INACTIF) {
+            return response([
+                'message' => 'Votre compte n\'est pas encore activé. Veillez reéssayer plus tard ! ',
             ], 404);
         }
         $user->tokens()->delete();
