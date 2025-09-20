@@ -46,9 +46,9 @@ class BroadcastToPharmaciesJob implements ShouldQueue
             ->where('status', OrderPharmacyStatus::ACCEPTED)
             ->count();
 
-        if ($pharmaciesAcceptedCount >= 2) {
+        if ($pharmaciesAcceptedCount >= 5) {
             $order->update(['status' => OrderStatus::TRAITE->value]);
-            \Log::info("Propagation arrêtée : déjà {$pharmaciesAcceptedCount} pharmacies ont traité la commande {$this->orderId}");
+            // \Log::info("Propagation arrêtée : déjà {$pharmaciesAcceptedCount} pharmacies ont traité la commande {$this->orderId}");
 
             return;
         }
@@ -77,14 +77,14 @@ class BroadcastToPharmaciesJob implements ShouldQueue
         }
 
         // Timeout global
-        if ($this->elapsedMinutes >= 10) {
+        if ($this->elapsedMinutes >= 30) {
             $order->update(['status' => OrderStatus::EXPIRE->value]);
 
             return;
         }
         // Planifier l’étape suivante dans 3 minutes avec un rayon élargi
         $nextRadius = $this->radius + 2;
-        dispatch(new BroadcastToPharmaciesJob($this->orderId, $nextRadius, $this->elapsedMinutes + 1))
-            ->delay(now()->addMinutes(1));
+        dispatch(new BroadcastToPharmaciesJob($this->orderId, $nextRadius, $this->elapsedMinutes + 3))
+            ->delay(now()->addMinutes(3));
     }
 }

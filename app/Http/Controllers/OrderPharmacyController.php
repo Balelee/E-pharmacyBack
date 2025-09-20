@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrderPharmacyResource;
 use App\Http\Resources\OrderResource;
 use App\Models\Enums\OrderPharmacyStatus;
 use App\Models\Order;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 
 class OrderPharmacyController extends Controller
 {
-    public function getPharmacienOrders(Request $request)
+    public function getPharmacienWOrders(Request $request)
     {
         $pharmacyId = auth()->user()->pharmacie?->id;
 
@@ -25,13 +26,34 @@ class OrderPharmacyController extends Controller
         $query = Order::with('details')
             ->whereJsonContains('notified_pharmacies', $pharmacyId)
             ->orderBy('id', 'desc');
-        if ($request->has('status') && $request->status !== 'Tous') {
+        if ($request->has('status')) {
             $query->where('status', $request->status);
         }
 
         $orders = $query->get();
 
         return OrderResource::collection($orders);
+    }
+    public function getPharmacienTOrROrders(Request $request)
+    {
+        $pharmacyId = auth()->user()->pharmacie?->id;
+
+        if (! $pharmacyId) {
+            return response()->json([
+                'message' => 'Pharmacien non lié à une pharmacie',
+            ], 403);
+        }
+
+        $query = OrderPharmacy::with('orderpharmacydetails.orderDetail')
+            ->where('pharmacy_id', $pharmacyId)
+            ->orderBy('id', 'desc');
+        if ($request->has('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $ordersPharmacy = $query->get();
+
+        return OrderPharmacyResource::collection($ordersPharmacy);
     }
 
     public function storeResponse(Request $request, $orderId)
