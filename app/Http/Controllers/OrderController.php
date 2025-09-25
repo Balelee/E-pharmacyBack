@@ -73,7 +73,7 @@ class OrderController extends BaseController
         }
         // Dispatch du job différé qui lancera la prochaine phase (3 min plus tard),  Lancer le premier broadcast (2 km, elapsed = 0)
         dispatch(new BroadcastToPharmaciesJob($order->id, 2, 0))
-            ->delay(now()->addMinutes(3));
+            ->delay(now()->addMinutes(0));
 
         return response()->json([
             'message' => 'Commande créée et envoyée aux pharmacies proches.',

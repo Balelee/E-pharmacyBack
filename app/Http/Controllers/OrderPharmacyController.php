@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\OrderPharmacyResource;
 use App\Http\Resources\OrderResource;
 use App\Models\Enums\OrderPharmacyStatus;
+use App\Models\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\OrderPharmacy;
 use App\Models\OrderPharmacyDetail;
@@ -23,13 +24,14 @@ class OrderPharmacyController extends Controller
             ], 403);
         }
 
-        $query = Order::with('details')
-            ->whereJsonContains('notified_pharmacies', $pharmacyId)
-            ->orderBy('id', 'desc');
-        if ($request->has('status')) {
-            $query->where('status', $request->status);
-        }
-
+      $query = Order::with('details')
+        ->whereJsonContains('notified_pharmacies', $pharmacyId)
+        ->where('status', OrderStatus::ENATTENTE->value)
+        ->whereDoesntHave('orderPharmacies', function($q) use ($pharmacyId) {
+            $q->where('pharmacy_id', $pharmacyId)
+           ; 
+        })
+        ->orderBy('id', 'desc');
         $orders = $query->get();
 
         return OrderResource::collection($orders);
