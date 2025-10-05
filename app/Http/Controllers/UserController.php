@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserLoggedIn;
 use App\Http\Resources\UserResource;
 use App\Models\Enums\ModelStatus;
 use App\Models\Pharmacy;
@@ -73,9 +74,12 @@ class UserController extends Controller
                 'message' => 'Votre compte n\'est pas encore activé. Veillez reéssayer plus tard ! ',
             ], 404);
         }
-        $user->tokens()->delete();
+        // $user->tokens()->delete();
         $token = $user->createToken('my-app-token')->plainTextToken;
         $user->token = $token;
+        $ip = $request->ip();
+        $device = $request->header('User-Agent')??"Inconnu";
+        event(new UserLoggedIn($user, $device, $ip));
 
         return new UserResource($user);
     }
@@ -99,7 +103,7 @@ class UserController extends Controller
             'email' => User::getValidationRule('email'),
             'phone' => User::getValidationRule('phone'),
             'password' => User::getValidationRule('password'),
-        ]);
+        ], User::messages());
 
         $user = User::create([
             'userName' => $request->userName,

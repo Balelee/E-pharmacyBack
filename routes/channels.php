@@ -20,6 +20,9 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('chat', function ($message) {
     return true;
 });
+Broadcast::channel('user.{id}', function ($authUser, $id) {
+    return (int) $authUser->id === (int) $id;
+});
 
 Broadcast::channel('pharmacy.{id}', function ($user, $id) {
     // Autorise uniquement si l'utilisateur appartient à la pharmacie demandée
