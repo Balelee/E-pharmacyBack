@@ -75,12 +75,16 @@ class UserController extends Controller
             ], 404);
         }
         // $user->tokens()->delete();
+        if ($user->tokens()->exists()) {
+            $userAgent = $request->header('User-Agent');
+            $ip = $request->ip();
+            event(new UserLoggedIn($user, $userAgent, $ip));
+            return response([
+                'message' => 'Un utilisateur est déjà connecté à ce compte. Attendez sa confirmation et réessayez plus tard !',
+            ], 404);
+        }
         $token = $user->createToken('my-app-token')->plainTextToken;
         $user->token = $token;
-        $ip = $request->ip();
-        $device = $request->header('User-Agent')??"Inconnu";
-        event(new UserLoggedIn($user, $device, $ip));
-
         return new UserResource($user);
     }
 
