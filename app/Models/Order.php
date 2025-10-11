@@ -40,6 +40,11 @@ class Order extends BaseModel
         return $this->hasMany(OrderDetail::class);
     }
 
+    public function getRequestCountAttribute(): int
+    {
+        return 0;
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -56,4 +61,13 @@ class Order extends BaseModel
             ->withPivot('status')
             ->withTimestamps();
     }
+
+    public static function booted()
+{
+    static::creating(function ($order) {
+        $lastNumber = Order::where('user_id', $order->user_id)->max('request_number');
+        $order->request_number = $lastNumber ? $lastNumber + 1 : 1;
+    });
+}
+
 }

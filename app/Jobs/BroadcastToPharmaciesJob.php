@@ -84,7 +84,7 @@ class BroadcastToPharmaciesJob implements ShouldQueue
         }
         // Planifier l’étape suivante dans 3 minutes avec un rayon élargi
         $nextRadius = $this->radius + 2;
-        dispatch(new BroadcastToPharmaciesJob($this->orderId, $nextRadius, $this->elapsedMinutes + 3))
-            ->delay(now()->addMinutes(3));
+        dispatch(new BroadcastToPharmaciesJob($this->orderId, $nextRadius, $this->elapsedMinutes + 2))
+            ->delay(now()->addMinutes(2));
     }
 }

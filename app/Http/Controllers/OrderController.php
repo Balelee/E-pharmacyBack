@@ -19,7 +19,6 @@ class OrderController extends BaseController
             ->where('user_id', $user->id)
             ->orderBy('id', 'desc')
             ->get();
-
         return OrderResource::collection($orders);
     }
 
@@ -71,13 +70,12 @@ class OrderController extends BaseController
                 'notified_pharmacies' => $newlyNotified,
             ]);
         }
-        // Dispatch du job différé qui lancera la prochaine phase (3 min plus tard),  Lancer le premier broadcast (2 km, elapsed = 0)
         dispatch(new BroadcastToPharmaciesJob($order->id, 2, 0))
             ->delay(now()->addMinutes(0));
 
         return response()->json([
             'message' => 'Commande créée et envoyée aux pharmacies proches.',
-            'order_id' => $order->id,
+            'request_id' => $order->id,
         ]);
     }
 
