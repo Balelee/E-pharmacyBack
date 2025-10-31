@@ -126,26 +126,17 @@ class UserController extends Controller
 
     public function updateUser(User $user, Request $request)
     {
-        $request->validate([
-            'userName' => User::getValidationRule('userName'),
-            'lastName' => User::getValidationRule('lastName'),
-            'firstName' => User::getValidationRule('firstName'),
-            'birthDate' => User::getValidationRule('birthDate'),
-            'birthPlace' => User::getValidationRule('birthPlace'),
-            'email' => User::getValidationRule('email'),
-            'phone' => User::getValidationRule('phone'),
-        ]);
 
-        $user->update([
-            'userName' => $request->userName,
-            'lastName' => $request->lastName,
-            'firstName' => $request->firstName,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'birthDate' => $request->birthDate,
-            'birthPlace' => $request->birthPlace,
+        $request->validate(User::updateValidationRules($user->id), User::messages());
 
-        ]);
+        $user->update($request->only([
+            'lastName',
+            'firstName',
+            'email',
+            'phone',
+            'birthDate',
+            'birthPlace'
+        ]));
 
         return new UserResource($user->refresh());
     }

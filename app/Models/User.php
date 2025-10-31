@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
+use Illuminate\Validation\Rule;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
@@ -97,7 +98,7 @@ class User extends Authenticatable
     }
 
     public static function validationRules()
-    {
+    { 
         return [
             'userName' => ['required', 'string', 'max:255', 'unique:users,userName'],
             'lastName' => ['required', 'string', 'max:255'],
@@ -109,6 +110,18 @@ class User extends Authenticatable
             'birthPlace' => ['required', 'string', 'max:255'],
         ];
     }
+
+    public static function updateValidationRules($userId)
+{
+    return [
+        'lastName' => ['required', 'string', 'max:255'],
+        'firstName' => ['required', 'string', 'max:255'],
+        'birthDate' => ['required', 'date'],
+        'birthPlace' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'email', Rule::unique('users', 'email')->ignore($userId)],
+        'phone' => ['required', 'string', 'max:12', Rule::unique('users', 'phone')->ignore($userId)],
+    ];
+}
 
 
     public static function messages()
