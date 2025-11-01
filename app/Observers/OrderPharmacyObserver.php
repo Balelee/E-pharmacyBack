@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Events\CommandeStatut;
+use App\Events\PharmacyCount;
 use App\Models\OrderPharmacy;
 use Illuminate\Support\Facades\DB;
 
@@ -19,6 +20,7 @@ class OrderPharmacyObserver
                 'orderpharmacydetails.orderDetail',
                 'pharmacy',
             ]);
+            event(new PharmacyCount($orderPharmacy));
 
             if (
                 $orderPharmacy->orderpharmacydetails->count() === 1 &&

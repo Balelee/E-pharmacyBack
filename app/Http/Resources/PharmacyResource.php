@@ -7,6 +7,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class PharmacyResource extends JsonResource
 {
+
+
     /**
      * Transform the resource into an array.
      *
@@ -14,6 +16,17 @@ class PharmacyResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // Conversion dynamique de la distance
+        $formattedDistance = null;
+        if (isset($this->distance)) {
+            if ($this->distance < 1) {
+                // en mètres
+                $formattedDistance = round($this->distance * 1000) . ' m';
+            } else {
+                // en kilomètres
+                $formattedDistance = round($this->distance, 2) . ' km';
+            }
+        }
         return [
             'id' => $this->id,
             'pharmacien_id' => $this->pharmacien_id,
@@ -24,6 +37,7 @@ class PharmacyResource extends JsonResource
             'is_open_now' => $this->is_open_now,
             'latitude' => $this->lat,
             'longitude' => $this->lng,
+            'distance' => $formattedDistance,
             'opening_hours' => OpeningHoursResource::collection($this->whenLoaded('openingHours')),
         ];
     }

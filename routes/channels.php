@@ -33,3 +33,8 @@ Broadcast::channel('client.{order_id}', function ($user, $order_id) {
         ->where('user_id', $user->id)
         ->exists();
 });
+Broadcast::channel('pharmacyCount.{order_id}', function ($user, $order_id) {
+    return Order::where('id', $order_id)
+        ->where('user_id', $user->id)
+        ->exists();
+});
