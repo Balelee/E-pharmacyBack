@@ -37,7 +37,7 @@ class CommandeStatut implements ShouldBroadcastNow
     public function broadcastWith()
     {
         return [
-            'orderPharmacy' => new OrderPharmacyResource($this->orderPharmacy),
+            'requestPharmacy' => new OrderPharmacyResource($this->orderPharmacy),
         ];
     }
 }

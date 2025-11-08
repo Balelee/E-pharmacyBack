@@ -47,6 +47,38 @@ class PharmacyController extends BaseController
         return PharmacyResource::collection($pharmacies->paginate($this->limitPage));
     }
 
+    public function getPharmacieCategories(Request $request)
+    {
+        // Nombre total de pharmacies
+        $total = Pharmacy::count();
+        $now = now()->toDateString();
+        $periode = PharmacyGarde::whereDate('date_debut', '<=', $now)
+            ->whereDate('date_fin', '>=', $now)
+            ->first();
+        $onDutyCount = 0;
+        if ($periode) {
+            $onDutyCount = Pharmacy::where('groupe', $periode->groupe)->count();
+        }
+        $data = [
+            [
+                'label' => 'Tous',
+                'filter' => '0',
+                'count' => $total,
+            ],
+            [
+                'label' => 'De gardes',
+                'filter' => '1',
+                'count' => $onDutyCount,
+            ],
+        ];
+
+        return response()->json([
+            'message' => 'Liste des types de pharmacies',
+            'data' => $data,
+        ]);
+    }
+
+
     public function storePharmacy(Request $request)
     {
         $request->validate([

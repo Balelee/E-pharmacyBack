@@ -4,6 +4,7 @@ use App\Http\Controllers\PharmacyController;
 use App\Http\Controllers\PharmacyGardeController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/pharmacies/categories', [PharmacyController::class, 'getPharmacieCategories']);
 Route::get('/pharmacies', [PharmacyController::class, 'getPharmacies']);
 Route::post('/pharmacies', [PharmacyController::class, 'storePharmacy']);
 Route::put('/pharmacies/{pharmacy}', [PharmacyController::class, 'updatePharmacy']);

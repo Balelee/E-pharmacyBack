@@ -16,7 +16,7 @@ class OrderPharmacyDetailResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'order_detail' => new OrderDetailResource($this->whenLoaded('orderDetail')),
+            'request_detail' => new OrderDetailResource($this->whenLoaded('orderDetail')),
             'available' => $this->available,
             'quantity' => $this->quantity,
             'price' => $this->price,
