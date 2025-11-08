@@ -12,14 +12,16 @@ use Illuminate\Http\Request;
 
 class OrderController extends BaseController
 {
-    public function getOrdersbyUser()
+    public function getOrdersbyUser(Request $request)
     {
         $user = auth()->user();
         $orders = Order::with('details')
             ->where('user_id', $user->id)
-            ->orderBy('id', 'desc')
-            ->get();
-        return OrderResource::collection($orders);
+            ->orderBy('id', 'desc');
+        if ($request->has('filter')) {
+            $orders->where('status', $request->filter);
+        }
+        return OrderResource::collection($orders->paginate($this->limitPage));
     }
 
     public function storeOrder(Request $request)
