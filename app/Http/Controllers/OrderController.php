@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Events\ProduitDemande;
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\OrderStatusStatResource;
 use App\Jobs\BroadcastToPharmaciesJob;
+use App\Models\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Pharmacy;
@@ -12,6 +14,36 @@ use Illuminate\Http\Request;
 
 class OrderController extends BaseController
 {
+
+    public function stats()
+{
+    $counts = Order::select('status')
+        ->selectRaw('COUNT(*) as total')
+        ->groupBy('status')
+        ->pluck('total', 'status');
+
+     $data = [
+        [
+            "label"  => OrderStatus::ENATTENTE->label(),
+            "filter" => OrderStatus::ENATTENTE->value,
+            "count"  => $counts[OrderStatus::ENATTENTE->value] ?? 0,
+        ],
+        [
+            "label"  => OrderStatus::TRAITE->label(),
+            "filter" => OrderStatus::TRAITE->value,
+            "count"  => $counts[OrderStatus::TRAITE->value] ?? 0,
+        ],
+        [
+            "label"  => OrderStatus::ANNULER->label(),
+            "filter" => OrderStatus::ANNULER->value,
+            "count"  => $counts[OrderStatus::ANNULER->value] ?? 0,
+        ],
+    ];
+
+    return OrderStatusStatResource::collection($data);
+}
+
+
     public function getOrdersbyUser(Request $request)
     {
         $user = auth()->user();
@@ -79,6 +111,13 @@ class OrderController extends BaseController
             'message' => 'Commande créée et envoyée aux pharmacies proches.',
             'request_id' => $order->id,
         ]);
+    }
+
+    public function cancelOrder(Order $order)
+    {
+        $order->status=OrderStatus::ANNULER->value;
+        $order->save();
+        return new OrderResource($order);
     }
 
     public function findOrder(Order $order)
