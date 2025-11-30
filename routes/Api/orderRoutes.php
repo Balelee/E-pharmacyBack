@@ -5,12 +5,16 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderPharmacyController;
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/orders', [OrderController::class, 'getOrdersbyUser']);
-    Route::get('/orders-w-pharmacien', [OrderPharmacyController::class, 'getPharmacienWOrders']);
-    Route::get('/orders-tr-pharmacien', [OrderPharmacyController::class, 'getPharmacienTOrROrders']);
-    Route::post('/orders', [OrderController::class, 'storeOrder']);
-    Route::get('/orders/{order}', [OrderController::class, 'findOrder']);
-    Route::delete('/orders/{order}', [OrderController::class, 'deleteOrder']);
+    Route::get('/requests/stats', [OrderController::class, 'stats']);
 
-    Route::post('/orders/{orderId}/pharmacies/response', [OrderPharmacyController::class, 'storeResponse']);
+    Route::get('/requests', [OrderController::class, 'getOrdersbyUser']);
+    Route::get('/requests-w-pharmacien', [OrderPharmacyController::class, 'getPharmacienWOrders']);
+    Route::get('/requests-tr-pharmacien', [OrderPharmacyController::class, 'getPharmacienTOrROrders']);
+    Route::post('/requests', [OrderController::class, 'storeOrder']);
+    Route::get('/requests/{order}/cancel', [OrderController::class, 'cancelOrder']);
+    Route::get('/requests/{order}', [OrderController::class, 'findOrder']);
+    Route::delete('/requests/{order}', [OrderController::class, 'deleteOrder']);
+    
+    Route::post('/requests/{orderId}/pharmacies/response', [OrderPharmacyController::class, 'storeResponse']);
+    Route::get('/responses/{order}', [OrderController::class, 'getClientRequestResponses']);
 });

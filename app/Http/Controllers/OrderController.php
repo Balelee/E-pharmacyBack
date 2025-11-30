@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Events\ProduitDemande;
+use App\Http\Resources\OrderPharmacyResource;
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\OrderStatusStatResource;
 use App\Jobs\BroadcastToPharmaciesJob;
+use App\Models\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Pharmacy;
@@ -12,15 +15,56 @@ use Illuminate\Http\Request;
 
 class OrderController extends BaseController
 {
-    public function getOrdersbyUser()
+
+    public function stats()
+    {
+        $counts = Order::select('status')
+            ->selectRaw('COUNT(*) as total')
+            ->groupBy('status')
+            ->pluck('total', 'status');
+
+        $data = [
+            [
+                "label"  => OrderStatus::ENATTENTE->label(),
+                "filter" => OrderStatus::ENATTENTE->value,
+                "count"  => $counts[OrderStatus::ENATTENTE->value] ?? 0,
+            ],
+            [
+                "label"  => OrderStatus::TRAITE->label(),
+                "filter" => OrderStatus::TRAITE->value,
+                "count"  => $counts[OrderStatus::TRAITE->value] ?? 0,
+            ],
+            [
+                "label"  => OrderStatus::ANNULER->label(),
+                "filter" => OrderStatus::ANNULER->value,
+                "count"  => $counts[OrderStatus::ANNULER->value] ?? 0,
+            ],
+        ];
+
+        return OrderStatusStatResource::collection($data);
+    }
+
+
+    public function getOrdersbyUser(Request $request)
     {
         $user = auth()->user();
         $orders = Order::with('details')
             ->where('user_id', $user->id)
-            ->orderBy('id', 'desc')
-            ->get();
-
-        return OrderResource::collection($orders);
+            ->orderBy('id', 'desc');
+        if ($request->has('filter')) {
+            $orders->where('status', $request->filter);
+        }
+        return OrderResource::collection($orders->paginate($this->limitPage));
+    }
+    public function getClientRequestResponses(Request $request, Order $order)
+    {
+        $user = auth()->user();
+        $orderPharmacies = $order->orderPharmacies()
+            ->with([
+                'orderpharmacydetails.orderDetail',
+                'pharmacy',
+            ]);
+        return OrderPharmacyResource::collection($orderPharmacies->paginate($this->limitPage));
     }
 
     public function storeOrder(Request $request)
@@ -71,14 +115,20 @@ class OrderController extends BaseController
                 'notified_pharmacies' => $newlyNotified,
             ]);
         }
-        // Dispatch du job différé qui lancera la prochaine phase (3 min plus tard),  Lancer le premier broadcast (2 km, elapsed = 0)
         dispatch(new BroadcastToPharmaciesJob($order->id, 2, 0))
             ->delay(now()->addMinutes(0));
 
         return response()->json([
             'message' => 'Commande créée et envoyée aux pharmacies proches.',
-            'order_id' => $order->id,
+            'request_id' => $order->id,
         ]);
+    }
+
+    public function cancelOrder(Order $order)
+    {
+        $order->status = OrderStatus::ANNULER->value;
+        $order->save();
+        return new OrderResource($order);
     }
 
     public function findOrder(Order $order)

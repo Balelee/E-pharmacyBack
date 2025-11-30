@@ -45,6 +45,6 @@ class ProduitDemande implements ShouldBroadcastNow
     {
         $order = Order::findOrFail($this->orderId);
 
-        return ['order' => new OrderResource($order)];
+        return ['request' => new OrderResource($order)];
     }
 }

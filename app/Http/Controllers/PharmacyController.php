@@ -6,21 +6,78 @@ use App\Http\Resources\FliterResource;
 use App\Http\Resources\PharmacyResource;
 use App\Models\Enums\UserType;
 use App\Models\Pharmacy;
+use App\Models\PharmacyGarde;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class PharmacyController extends BaseController
 {
-    public function getPharmacies()
+    public function getPharmacies(Request $request)
     {
         $pharmacies = Pharmacy::with('openingHours');
         if (! empty($this->seachValue)) {
-            $pharmacies->whereRaw('LOWER(name) LIKE ?', ['%'.mb_strtolower($this->seachValue).'%']);
+            $pharmacies->whereRaw('LOWER(name) LIKE ?', ['%' . mb_strtolower($this->seachValue) . '%']);
+        }
+
+        // Filtrage géographique
+        $lat = $request->get('lat');
+        $lng = $request->get('lng');
+
+        if ($lat && $lng) {
+            $pharmacies->nearbyClientPosition($lat, $lng);
+        }
+
+        // --- 🌙 Filtrage pharmacies de garde
+        $isOnDuty = $request->boolean('is_on_duty');
+        if ($isOnDuty) {
+            $now = now()->toDateString();
+            $periode = PharmacyGarde::whereDate('date_debut', '<=', $now)
+                ->whereDate('date_fin', '>=', $now)
+                ->first();
+            if ($periode) {
+                $pharmacies->where('groupe', $periode->groupe);
+            } else {
+                return response()->json([
+                    'message' => 'Aucune pharmacie de garde pour cette date.',
+                    'data' => [],
+                ]);
+            }
         }
 
         return PharmacyResource::collection($pharmacies->paginate($this->limitPage));
-
     }
+
+    public function getPharmacieCategories(Request $request)
+    {
+        // Nombre total de pharmacies
+        $total = Pharmacy::count();
+        $now = now()->toDateString();
+        $periode = PharmacyGarde::whereDate('date_debut', '<=', $now)
+            ->whereDate('date_fin', '>=', $now)
+            ->first();
+        $onDutyCount = 0;
+        if ($periode) {
+            $onDutyCount = Pharmacy::where('groupe', $periode->groupe)->count();
+        }
+        $data = [
+            [
+                'label' => 'Tous',
+                'filter' => '0',
+                'count' => $total,
+            ],
+            [
+                'label' => 'De gardes',
+                'filter' => '1',
+                'count' => $onDutyCount,
+            ],
+        ];
+
+        return response()->json([
+            'message' => 'Liste des types de pharmacies',
+            'data' => $data,
+        ]);
+    }
+
 
     public function storePharmacy(Request $request)
     {

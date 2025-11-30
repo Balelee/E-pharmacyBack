@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserLoggedIn;
 use App\Http\Resources\UserResource;
 use App\Models\Enums\ModelStatus;
 use App\Models\Pharmacy;
@@ -73,10 +74,17 @@ class UserController extends Controller
                 'message' => 'Votre compte n\'est pas encore activé. Veillez reéssayer plus tard ! ',
             ], 404);
         }
-        $user->tokens()->delete();
+        // $user->tokens()->delete();
+        if ($user->tokens()->exists()) {
+            $userAgent = $request->header('User-Agent');
+            $ip = $request->ip();
+            event(new UserLoggedIn($user, $userAgent, $ip));
+            return response([
+                'message' => 'Un utilisateur est déjà connecté à ce compte. Attendez sa confirmation et réessayez plus tard !',
+            ], 404);
+        }
         $token = $user->createToken('my-app-token')->plainTextToken;
         $user->token = $token;
-
         return new UserResource($user);
     }
 
@@ -99,7 +107,7 @@ class UserController extends Controller
             'email' => User::getValidationRule('email'),
             'phone' => User::getValidationRule('phone'),
             'password' => User::getValidationRule('password'),
-        ]);
+        ], User::messages());
 
         $user = User::create([
             'userName' => $request->userName,
@@ -118,26 +126,17 @@ class UserController extends Controller
 
     public function updateUser(User $user, Request $request)
     {
-        $request->validate([
-            'userName' => User::getValidationRule('userName'),
-            'lastName' => User::getValidationRule('lastName'),
-            'firstName' => User::getValidationRule('firstName'),
-            'birthDate' => User::getValidationRule('birthDate'),
-            'birthPlace' => User::getValidationRule('birthPlace'),
-            'email' => User::getValidationRule('email'),
-            'phone' => User::getValidationRule('phone'),
-        ]);
 
-        $user->update([
-            'userName' => $request->userName,
-            'lastName' => $request->lastName,
-            'firstName' => $request->firstName,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'birthDate' => $request->birthDate,
-            'birthPlace' => $request->birthPlace,
+        $request->validate(User::updateValidationRules($user->id), User::messages());
 
-        ]);
+        $user->update($request->only([
+            'lastName',
+            'firstName',
+            'email',
+            'phone',
+            'birthDate',
+            'birthPlace'
+        ]));
 
         return new UserResource($user->refresh());
     }

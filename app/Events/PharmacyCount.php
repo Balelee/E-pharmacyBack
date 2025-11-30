@@ -6,11 +6,10 @@ use App\Http\Resources\OrderPharmacyResource;
 use App\Models\OrderPharmacy;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class CommandeStatut implements ShouldBroadcastNow
+class PharmacyCount
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -23,7 +22,7 @@ class CommandeStatut implements ShouldBroadcastNow
 
     public function broadcastOn()
     {
-        return new PrivateChannel('client.'.$this->orderPharmacy->order_id);
+        return new PrivateChannel('pharmacy-count.' . $this->orderPharmacy->order_id);
     }
 
     /**
@@ -31,13 +30,13 @@ class CommandeStatut implements ShouldBroadcastNow
      */
     public function broadcastAs()
     {
-        return 'commande.statut';
+        return 'commande.traitement.count';
     }
 
     public function broadcastWith()
     {
         return [
-            'requestPharmacy' => new OrderPharmacyResource($this->orderPharmacy),
+           'treated_count' => $this->orderPharmacy->treated_count,
         ];
     }
 }
