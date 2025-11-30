@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\ProduitDemande;
+use App\Http\Resources\OrderPharmacyResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\OrderStatusStatResource;
 use App\Jobs\BroadcastToPharmaciesJob;
@@ -16,32 +17,32 @@ class OrderController extends BaseController
 {
 
     public function stats()
-{
-    $counts = Order::select('status')
-        ->selectRaw('COUNT(*) as total')
-        ->groupBy('status')
-        ->pluck('total', 'status');
+    {
+        $counts = Order::select('status')
+            ->selectRaw('COUNT(*) as total')
+            ->groupBy('status')
+            ->pluck('total', 'status');
 
-     $data = [
-        [
-            "label"  => OrderStatus::ENATTENTE->label(),
-            "filter" => OrderStatus::ENATTENTE->value,
-            "count"  => $counts[OrderStatus::ENATTENTE->value] ?? 0,
-        ],
-        [
-            "label"  => OrderStatus::TRAITE->label(),
-            "filter" => OrderStatus::TRAITE->value,
-            "count"  => $counts[OrderStatus::TRAITE->value] ?? 0,
-        ],
-        [
-            "label"  => OrderStatus::ANNULER->label(),
-            "filter" => OrderStatus::ANNULER->value,
-            "count"  => $counts[OrderStatus::ANNULER->value] ?? 0,
-        ],
-    ];
+        $data = [
+            [
+                "label"  => OrderStatus::ENATTENTE->label(),
+                "filter" => OrderStatus::ENATTENTE->value,
+                "count"  => $counts[OrderStatus::ENATTENTE->value] ?? 0,
+            ],
+            [
+                "label"  => OrderStatus::TRAITE->label(),
+                "filter" => OrderStatus::TRAITE->value,
+                "count"  => $counts[OrderStatus::TRAITE->value] ?? 0,
+            ],
+            [
+                "label"  => OrderStatus::ANNULER->label(),
+                "filter" => OrderStatus::ANNULER->value,
+                "count"  => $counts[OrderStatus::ANNULER->value] ?? 0,
+            ],
+        ];
 
-    return OrderStatusStatResource::collection($data);
-}
+        return OrderStatusStatResource::collection($data);
+    }
 
 
     public function getOrdersbyUser(Request $request)
@@ -54,6 +55,16 @@ class OrderController extends BaseController
             $orders->where('status', $request->filter);
         }
         return OrderResource::collection($orders->paginate($this->limitPage));
+    }
+    public function getClientRequestResponses(Request $request, Order $order)
+    {
+        $user = auth()->user();
+        $orderPharmacies = $order->orderPharmacies()
+            ->with([
+                'orderpharmacydetails.orderDetail',
+                'pharmacy',
+            ]);
+        return OrderPharmacyResource::collection($orderPharmacies->paginate($this->limitPage));
     }
 
     public function storeOrder(Request $request)
@@ -115,7 +126,7 @@ class OrderController extends BaseController
 
     public function cancelOrder(Order $order)
     {
-        $order->status=OrderStatus::ANNULER->value;
+        $order->status = OrderStatus::ANNULER->value;
         $order->save();
         return new OrderResource($order);
     }

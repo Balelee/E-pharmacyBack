@@ -24,6 +24,7 @@ class OrderResource extends JsonResource
             'statusLabel' => $this->status?->label(),
             'statusColor' => $this->status->color(),
             'date' => $this->created_at->diffForHumans(),
+            'created_at' => $this->created_at,
             'details' => OrderDetailResource::collection($this->details),
         ];
     }
